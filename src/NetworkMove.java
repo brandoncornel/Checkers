@@ -11,8 +11,7 @@
  *
  */
 
-import java.util.*;
-import java.io.*;
+import java.io.Serializable;
 
 /**
  * An object representation of a move, without a reference to the Player who
@@ -26,6 +25,7 @@ public class NetworkMove implements Serializable {
 	private int endingLocation;  	// the ending location
 
 	/**
+     * l;ljop
 	 * Create a move with the starting location and
 	 * ending location passed in as paremeters.
 	 *
