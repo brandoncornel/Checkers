@@ -1,15 +1,5 @@
-package GUI;/*
- * GUI.Firstscreen.java
- *
- *  * Version:
- *   $Id: GUI.Firstscreen.java,v 1.1 2002/10/22 21:12:52 se362 Exp $
- *
- * Revisions:
- *   $Log: GUI.Firstscreen.java,v $
- *   Revision 1.1  2002/10/22 21:12:52  se362
- *   Initial creation of case study
- *
- */
+package GUI;
+
 import java.net.*;
 import javax.swing.*;
 import java.awt.event.*;
@@ -88,7 +78,7 @@ public class Firstscreen extends JFrame implements ActionListener{
 		
 	LocalGameButton.setActionCommand("local");
         LocalGameButton.setText("Local game");
-        LocalGameButton.addActionListener(this);
+        LocalGameButton.addActionListener(new IPFieldSetEnabled(false));
         LocalGameButton.setSelected( true );
         
         gridBagConstraints1 = new GridBagConstraints();
@@ -99,7 +89,7 @@ public class Firstscreen extends JFrame implements ActionListener{
         
         HostGameButton.setActionCommand("host");
         HostGameButton.setText("Host game");
-        HostGameButton.addActionListener(this);
+        HostGameButton.addActionListener(new IPFieldSetEnabled(false));
         
         gridBagConstraints1 = new GridBagConstraints();
         gridBagConstraints1.gridx = 1;
@@ -109,7 +99,7 @@ public class Firstscreen extends JFrame implements ActionListener{
         
         JoinGameButton.setActionCommand("join");
         JoinGameButton.setText("Join game");
-        JoinGameButton.addActionListener(this);
+        JoinGameButton.addActionListener(new IPFieldSetEnabled(true));
         
         gridBagConstraints1 = new java.awt.GridBagConstraints();
         gridBagConstraints1.gridx = 1;
@@ -201,20 +191,11 @@ public class Firstscreen extends JFrame implements ActionListener{
 	public void actionPerformed( ActionEvent e ){
 		
 	    try{
-		//this code handles disabling the IP field unless
-		//the join game radio button is selected
-		if ( ( e.getActionCommand() ).equals( "join" ) ){
-		    IPField.setEnabled( true );
-		}else if( (e.getActionCommand() ).equals( "local" ) ){
-		    IPField.setEnabled( false );
-		}else if( ( e.getActionCommand() ).equals( "host" ) ){
-		    IPField.setEnabled( false );
-
 		    //this next if statement takes care of when the 
 		    //OK button is selected and goes to the second 
 		    //screen settign the desired options          
 
-		}else if( ( e.getActionCommand() ).equals( "ok" ) ){
+		if( ( e.getActionCommand() ).equals( "ok" ) ){
 		    
 		    //a temporary button to use for determining the game type
 		    ButtonModel tempButton = gameModes.getSelection();
@@ -292,4 +273,20 @@ public class Firstscreen extends JFrame implements ActionListener{
 
 	}//end of actionPerformed
 
-}//GUI.Firstscreen.java
+	/**
+	 * Upon a call to actionPerformed, sets the enabled property 
+	 */
+	
+	private class IPFieldSetEnabled implements ActionListener {
+		private final boolean enabled;
+		
+		public IPFieldSetEnabled(boolean enabled) {
+			this.enabled = enabled;
+		}
+		
+		public void actionPerformed(ActionEvent e) {
+			IPField.setEnabled(enabled);
+		}
+	}
+
+}
