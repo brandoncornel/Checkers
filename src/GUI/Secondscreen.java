@@ -90,12 +90,7 @@ public class Secondscreen extends JFrame
         warningLengthField = new JSlider( 10, 300, 120 );
         getContentPane().setLayout(new GridBagLayout());
         GridBagConstraints gridBagConstraints1;
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent evt) {
-                exitForm(evt);
-            }
-        }
-        );
+        addWindowListener(new ExitProgramListener());
 
         
         timedGameBox.setBackground(new Color (204, 204, 204));
@@ -352,16 +347,5 @@ public class Secondscreen extends JFrame
 	
     }//end of actionPerformed
     
-    /** 
-     * 
-     * Exit the Application 
-     *
-     * @param evt the action that tells the window to close
-     * 
-     */
     
-    private void exitForm(java.awt.event.WindowEvent evt) {
-	System.exit(0);
-    }
-  
 }//GUI.Secondscreen

@@ -229,18 +229,5 @@ public class Firstscreen extends JFrame {
 			IPField.setEnabled(enabled);
 		}
 	}
-	
-	/**
-	 * Upon a call to actionPerformed or windowClosing, exits the program 
-	 */
-	
-	private class ExitProgramListener extends WindowAdapter implements ActionListener {
-		public void windowClosing(java.awt.event.WindowEvent evt) {
-			System.exit(0);
-		}
-		public void actionPerformed(ActionEvent e) {
-			System.exit(0);
-		}
-	}
 
 }
