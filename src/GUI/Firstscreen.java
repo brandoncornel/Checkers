@@ -12,7 +12,7 @@ import System.Facade;
  * @version 
  */
 
-public class Firstscreen extends JFrame implements ActionListener{
+public class Firstscreen extends JFrame {
 
     Facade theFacade;
     Secondscreen next;
@@ -107,7 +107,6 @@ public class Firstscreen extends JFrame implements ActionListener{
         IPField.setForeground( Color.black);
         IPField.setText("IP address goes here");
         IPField.setEnabled( false );
-        IPField.addActionListener(this);
         
         gridBagConstraints1 = new GridBagConstraints();
         gridBagConstraints1.gridx = 2;
@@ -129,7 +128,7 @@ public class Firstscreen extends JFrame implements ActionListener{
         OKButton.setName("button6");
         OKButton.setBackground(new Color (212, 208, 200));
         OKButton.setForeground(Color.black);
-        OKButton.addActionListener(this);
+        OKButton.addActionListener(new ContinueToSecondScreenActionListener());
         
         gridBagConstraints1 = new GridBagConstraints();
         gridBagConstraints1.gridx = 2;
@@ -171,86 +170,56 @@ public class Firstscreen extends JFrame implements ActionListener{
 	 * 
 	 */
 	
-	public void actionPerformed( ActionEvent e ){
-		
-	    try{
-		    //this next if statement takes care of when the 
-		    //OK button is selected and goes to the second 
-		    //screen settign the desired options          
-
-		if( ( e.getActionCommand() ).equals( "ok" ) ){
-		    
-		    //a temporary button to use for determining the game type
-		    ButtonModel tempButton = gameModes.getSelection();
-		    
-		    //if check to see of the local radio button is selected
-		    if( tempButton.getActionCommand().equals( "local" ) ){
+	private class ContinueToSecondScreenActionListener implements ActionListener {
+		public void actionPerformed( ActionEvent e ){
 			
-			//set up a local game
-			theFacade.setGameMode( theFacade.LOCALGAME );
+			int gameType;
+			if (JoinGameButton.isSelected()) {
+				gameType = theFacade.CLIENTGAME;
+			} else if (HostGameButton.isSelected()) {
+				gameType = theFacade.HOSTGAME;
+			} else { // assume the last button is selected
+				gameType = theFacade.LOCALGAME;
+			}
 			
-			theFacade.createPlayer( 1, theFacade.LOCALGAME );
-			theFacade.createPlayer( 2, theFacade.LOCALGAME );
+			
+			try {
+				// this method doesn't throw a type of exception, it throws Exception itself
+				theFacade.setGameMode( gameType );
+			} catch (Exception e1) {
+				AssertionError e2 = new AssertionError("gameType does not throw if parameter is one of CLIENTGAME, HOSTGAME or LOCALGAME. Was: " + gameType);
+				e2.initCause(e1);
+				throw e2;
+			}
+			
+			theFacade.createPlayer( 1, gameType );
+			theFacade.createPlayer( 2, gameType );
+			
+			
+			if (JoinGameButton.isSelected()) {
+				try {
+					
+					//create a URL from the IP address in the IPfield
+					URL address = new URL( "http://" + IPField.getText() );
+					//set the host
+					theFacade.setHost( address );
+											
+					//catch any exceptions
+				} catch ( MalformedURLException x ) {
+					JOptionPane.showMessageDialog( null,
+								"Invalid host address",
+								"Error",
+								JOptionPane.INFORMATION_MESSAGE );
+				}
+			}
 			
 			//hide the GUI.Firstscreen, make a GUI.Secondscreen and show it
-			this.hide();
-			next = new Secondscreen( theFacade, this, theFacade.LOCALGAME );
+			Firstscreen.this.hide();
+			next = new Secondscreen( theFacade, Firstscreen.this, gameType );
 			next.show();
 			
-			//if the host game button is selected
-		    } else if( tempButton.getActionCommand().equals( "host" ) ){
-			
-			//set up to host a game
-			theFacade.setGameMode( theFacade.HOSTGAME );
-			
-			theFacade.createPlayer( 1, theFacade.HOSTGAME );
-			theFacade.createPlayer( 2, theFacade.HOSTGAME );
-			
-			//hide the GUI.Firstscreen, make the GUI.Secondscreen and show it
-			this.hide();
-			next = new Secondscreen( theFacade, this, theFacade.HOSTGAME );
-			next.show();
-			
-			//if the join game button is selected
-		    } else if( tempButton.getActionCommand().equals( "join" ) ){
-			
-			//set up to join a game
-			theFacade.setGameMode( theFacade.CLIENTGAME );
-			
-			theFacade.createPlayer( 1, theFacade.CLIENTGAME );
-			theFacade.createPlayer( 2, theFacade.CLIENTGAME );
-			
-			//try to connect
-			try {
-
-			    //create a URL from the IP address in the IPfield
-			    URL address = new URL( "http://" + IPField.getText() );
-			    //set the host
-			    theFacade.setHost( address );
-			    
-			    //hide the GUI.Firstscreen, make and show the Second screen
-			    this.hide();
-			    next = new Secondscreen( theFacade, this, theFacade.CLIENTGAME );
-			    next.show();
-                                        
-			    //catch any exceptions
-			} catch ( MalformedURLException x ) {
-			    JOptionPane.showMessageDialog( null,
-							   "Invalid host address",
-							   "Error",
-							   JOptionPane.INFORMATION_MESSAGE );
-			}//end of networking catch statement
-			
-			//set up to connect to another person
-		    }
-		    
-		}
-		
-	    } catch( Exception x ) {
-		System.err.println( x.getMessage() );
-	    }//end of general catch statement
-
-	}//end of actionPerformed
+		}//end of actionPerformed
+	}
 
 	/**
 	 * Upon a call to actionPerformed, sets the enabled property 
