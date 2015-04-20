@@ -65,12 +65,7 @@ public class Firstscreen extends JFrame implements ActionListener{
         IPExampleLabel = new JLabel();
         getContentPane().setLayout(new java.awt.GridBagLayout());
         java.awt.GridBagConstraints gridBagConstraints1;
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                exitForm(evt);
-            }
-        }
-        );
+        addWindowListener(new ExitProgramListener());
         
 	gameModes.add(LocalGameButton);
         gameModes.add(HostGameButton);
@@ -147,7 +142,7 @@ public class Firstscreen extends JFrame implements ActionListener{
         CancelButton.setName("button7");
         CancelButton.setBackground(new Color (212, 208, 200));
         CancelButton.setForeground(Color.black);
-        CancelButton.addActionListener(this);
+        CancelButton.addActionListener(new ExitProgramListener());
         
         gridBagConstraints1 = new GridBagConstraints();
         gridBagConstraints1.gridx = 3;
@@ -166,18 +161,6 @@ public class Firstscreen extends JFrame implements ActionListener{
         getContentPane().add(IPExampleLabel, gridBagConstraints1);
         
         
-    }
-
-    /**
-     *  
-     * Exit the Application
-     * 
-     * @param the event to close the window
-     * 
-     */
-
-    private void exitForm(WindowEvent evt) {
-        System.exit (0);
     }
 
 	/**
@@ -261,11 +244,7 @@ public class Firstscreen extends JFrame implements ActionListener{
 			//set up to connect to another person
 		    }
 		    
-		    
-                                //if they hit cancel exit the game
-		} else if( e.getActionCommand().equals( "cancel" ) ){
-		    System.exit( 0 );
-		} 
+		}
 		
 	    } catch( Exception x ) {
 		System.err.println( x.getMessage() );
@@ -286,6 +265,19 @@ public class Firstscreen extends JFrame implements ActionListener{
 		
 		public void actionPerformed(ActionEvent e) {
 			IPField.setEnabled(enabled);
+		}
+	}
+	
+	/**
+	 * Upon a call to actionPerformed or windowClosing, exits the program 
+	 */
+	
+	private class ExitProgramListener extends WindowAdapter implements ActionListener {
+		public void windowClosing(java.awt.event.WindowEvent evt) {
+			System.exit(0);
+		}
+		public void actionPerformed(ActionEvent e) {
+			System.exit(0);
 		}
 	}
 
