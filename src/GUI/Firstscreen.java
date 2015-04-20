@@ -14,19 +14,13 @@ import System.Facade;
 
 public class Firstscreen extends JFrame {
 
-    Facade theFacade;
-    Secondscreen next;
+    private final Facade theFacade;
   
     // Variables declaration - do not modify
     private JRadioButton LocalGameButton;
     private JRadioButton HostGameButton;
     private JRadioButton JoinGameButton;
     private JTextField IPField;
-    private JLabel IPLabel;
-    private JButton OKButton;
-    private JButton CancelButton;
-    private JLabel IPExampleLabel;
-    private ButtonGroup gameModes;
     // End of variables declaration
 
 
@@ -57,12 +51,12 @@ public class Firstscreen extends JFrame {
         LocalGameButton = new JRadioButton();
         HostGameButton = new JRadioButton();
         JoinGameButton = new JRadioButton();
-	gameModes = new ButtonGroup();
+        final ButtonGroup gameModes = new ButtonGroup();
         IPField = new JTextField();
-        IPLabel = new JLabel();
-        OKButton = new JButton();
-        CancelButton = new JButton();
-        IPExampleLabel = new JLabel();
+        final JLabel IPLabel = new JLabel();
+        final JButton OKButton = new JButton();
+        final JButton CancelButton = new JButton();
+        final JLabel IPExampleLabel = new JLabel();
         getContentPane().setLayout(new java.awt.GridBagLayout());
         java.awt.GridBagConstraints gridBagConstraints1;
         addWindowListener(new ExitProgramListener());
@@ -206,7 +200,7 @@ public class Firstscreen extends JFrame {
 											
 					//catch any exceptions
 				} catch ( MalformedURLException x ) {
-					JOptionPane.showMessageDialog( null,
+					JOptionPane.showMessageDialog( Firstscreen.this,
 								"Invalid host address",
 								"Error",
 								JOptionPane.INFORMATION_MESSAGE );
@@ -214,9 +208,8 @@ public class Firstscreen extends JFrame {
 			}
 			
 			//hide the GUI.Firstscreen, make a GUI.Secondscreen and show it
-			Firstscreen.this.hide();
-			next = new Secondscreen( theFacade, Firstscreen.this, gameType );
-			next.show();
+			Firstscreen.this.setVisible(false);
+			new Secondscreen( theFacade, Firstscreen.this, gameType ).setVisible(true);
 			
 		}//end of actionPerformed
 	}
