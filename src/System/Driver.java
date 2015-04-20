@@ -14,11 +14,11 @@ package System; /**
 import Model.Board;
 import Model.Player;
 import Model.Rules;
+import System.Timer;
 
 import java.awt.*;
 import java.net.*;
 import javax.swing.*;
-import javax.swing.Timer;
 
 /**
  *
@@ -35,12 +35,12 @@ import javax.swing.Timer;
 public class Driver {
     
     private Player  playerOne;
-    private Player playerTwo;
+    private Player  playerTwo;
     private int     gameType;
     private Player  activePlayer;
     private Player  passivePlayer;
     private boolean runningTimer;
-    private javax.swing.Timer theTimer;
+    private Timer   theTimer;
     private Facade  theFacade;
     private Rules   theRules;
     
