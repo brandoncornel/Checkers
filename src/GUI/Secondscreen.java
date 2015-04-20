@@ -1,15 +1,4 @@
-package GUI;/*
- * GUI.Secondscreen.java
- *
- * Version:
- *   $Id: GUI.Secondscreen.java,v 1.1 2002/10/22 21:12:53 se362 Exp $
- *
- * Revisions:
- *   $Log: GUI.Secondscreen.java,v $
- *   Revision 1.1  2002/10/22 21:12:53  se362
- *   Initial creation of case study
- *
- */
+package GUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,15 +15,14 @@ import System.Facade;
  * @author
  * 
  */
-public class Secondscreen extends JFrame
-    implements ActionListener, ChangeListener {
+public class Secondscreen extends JFrame {
     
     private Facade theFacade;
     private Firstscreen theFirst;
     private int gameType;
     
     // Variables declaration
-    private Checkbox timedGameBox;
+    private JCheckBox timedGameBox;
     private JLabel playerOneLabel;
     private JLabel playerTwoLabel;
     private JTextField playerOneField;
@@ -77,7 +65,7 @@ public class Secondscreen extends JFrame
 	
     private void initComponents() {
 
-        timedGameBox = new Checkbox();
+        timedGameBox = new JCheckBox();
         playerOneLabel = new JLabel();
         playerTwoLabel = new JLabel();
         playerOneField = new JTextField();
@@ -96,8 +84,9 @@ public class Secondscreen extends JFrame
         timedGameBox.setBackground(new Color (204, 204, 204));
         timedGameBox.setName("timedGameBox");
         timedGameBox.setForeground(Color.black);
-        timedGameBox.setLabel("Timed game");
-        timedGameBox.setState( true );
+        timedGameBox.setText("Timed game");
+        timedGameBox.setSelected( true );
+        timedGameBox.addActionListener(new EnableTimerSettingsActionListener());
 
         gridBagConstraints1 = new GridBagConstraints();
         gridBagConstraints1.gridx = 0;
@@ -184,7 +173,7 @@ public class Secondscreen extends JFrame
         okButton.setBackground(new Color (212, 208, 200));
         okButton.setForeground(Color.black);
         okButton.setActionCommand("ok");
-        okButton.addActionListener( this );
+        okButton.addActionListener( new ContinueToCheckerGuiActionListener() );
 		
         gridBagConstraints1 = new GridBagConstraints();
         gridBagConstraints1.gridx = 0;
@@ -198,7 +187,7 @@ public class Secondscreen extends JFrame
         cancelButton.setBackground(new Color (212, 208, 200));
         cancelButton.setForeground(Color.black);
         cancelButton.setActionCommand("cancel");
-        cancelButton.addActionListener( this );
+        cancelButton.addActionListener( new ReturnToFirstScreenActionListener() );
         
         gridBagConstraints1 = new GridBagConstraints();
         gridBagConstraints1.gridx = 1;
@@ -208,7 +197,7 @@ public class Secondscreen extends JFrame
         getContentPane().add(cancelButton, gridBagConstraints1);
         
         turnLengthField.setName("textfield3");
-        turnLengthField.addChangeListener( this );
+        turnLengthField.addChangeListener( new UpdateLabelWithValueChangeListener(turnLengthLabel, "Turn Length") );
      
         gridBagConstraints1 = new GridBagConstraints();
         gridBagConstraints1.gridx = 1;
@@ -216,7 +205,7 @@ public class Secondscreen extends JFrame
         getContentPane().add(turnLengthField, gridBagConstraints1);
        
         warningLengthField.setName("textfield4");
-        warningLengthField.addChangeListener( this );
+        warningLengthField.addChangeListener( new UpdateLabelWithValueChangeListener(WarningLengthLabel, "Warning Length") );
         
         gridBagConstraints1 = new GridBagConstraints();
         gridBagConstraints1.gridx = 1;
@@ -241,25 +230,6 @@ public class Secondscreen extends JFrame
 	}
     }
     
-    /*
-     * This changes the text on the labels
-     *
-     * @param e the change event
-     *
-     */
-    public void stateChanged( ChangeEvent e ) {
-
-        if ( e.getSource().equals( turnLengthField ) ) {
-            turnLengthLabel.setText("Turn Length ( "
-				    + turnLengthField.getValue() 
-				    + " seconds )");
-        } else if ( e.getSource().equals( warningLengthField ) ) {
-            WarningLengthLabel.setText("Warning Length ( "
-				       + warningLengthField.getValue() 
-				       + " seconds )");
-        }
-    }
-    
     
     /**
      * This takes care of when an action takes place. It will check the 
@@ -268,6 +238,7 @@ public class Secondscreen extends JFrame
      * @param the event fired
      */
     
+	private class ContinueToCheckerGuiActionListener implements ActionListener {
     public void actionPerformed( ActionEvent e ){
 	try{
 	    
@@ -291,7 +262,7 @@ public class Secondscreen extends JFrame
 		
 		//if a timer is desired
 		if ( timedGameBox.isEnabled() ) {
-		    if( timedGameBox.getState() ){
+		    if( timedGameBox.isSelected() ){
 			
 			//set the 2 timer values
 			try {
@@ -319,26 +290,14 @@ public class Secondscreen extends JFrame
 		//start the game
 		theFacade.startGame();
 		//hide this screen, make and show the GUI
-		this.hide();
+		Secondscreen.this.dispose();
 		CheckerGUI GUI = new CheckerGUI( theFacade, theFacade.getPlayerName( 1 ),
 						 theFacade.getPlayerName( 2 ) );
-		GUI.show();
+		GUI.setVisible(true);
 		
 		//if they hit cancel go to the previous screen
-	    } else if( e.getActionCommand().equals( "cancel" ) ) {
-		this.hide();
-		theFirst.show();
 		
 		//handle whether or not a timer is desired
-	    } else if ( e.getSource() instanceof Checkbox ) {
-		
-		if( timedGameBox.getState() ){
-		    turnLengthField.setEnabled( true );
-		    warningLengthField.setEnabled( true );
-		} else {
-		    turnLengthField.setEnabled( false );
-		    warningLengthField.setEnabled( false );
-		}
 	    }
 	    
 	} catch( Exception x ){
@@ -346,6 +305,47 @@ public class Secondscreen extends JFrame
 	}	
 	
     }//end of actionPerformed
+    }
     
     
+	private class ReturnToFirstScreenActionListener implements ActionListener {
+		public void actionPerformed( ActionEvent e ){
+			Secondscreen.this.dispose();
+			theFirst.setVisible(true);
+		}
+	}
+	
+	private class EnableTimerSettingsActionListener implements ActionListener {
+		public void actionPerformed( ActionEvent e ){
+			AbstractButton src = (AbstractButton) e.getSource();
+			
+			turnLengthField.setEnabled( src.isSelected() );
+			warningLengthField.setEnabled( src.isSelected() );
+		}
+	}
+	
+	private class UpdateLabelWithValueChangeListener implements ChangeListener {
+		private final JLabel toUpdate;
+		private final String caption;
+		
+		public UpdateLabelWithValueChangeListener(JLabel toUpdate, String caption) {
+			this.toUpdate = toUpdate;
+			this.caption = caption;
+		}
+		
+		/*
+		 * This changes the text on the labels
+		 *
+		 * @param e the change event
+		 *
+		 */
+		public void stateChanged( ChangeEvent e ) {
+			JSlider src = (JSlider) e.getSource();
+			
+			this.toUpdate.setText(this.caption + " ( "
+					+ src.getValue() 
+					+ " seconds )");
+		}
+	}
+	
 }//GUI.Secondscreen
