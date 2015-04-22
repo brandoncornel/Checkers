@@ -17,9 +17,7 @@ public class Firstscreen extends JFrame {
     private final Facade theFacade;
   
     // Variables declaration - do not modify
-    private JRadioButton LocalGameButton;
-    private JRadioButton HostGameButton;
-    private JRadioButton JoinGameButton;
+    private GameTypeSelectionPanel gameTypeSelection;
     private JTextField IPField;
     // End of variables declaration
 
@@ -48,9 +46,7 @@ public class Firstscreen extends JFrame {
 
     private void initComponents() {
 
-        LocalGameButton = new JRadioButton();
-        HostGameButton = new JRadioButton();
-        JoinGameButton = new JRadioButton();
+        gameTypeSelection = new GameTypeSelectionPanel();
         final ButtonGroup gameModes = new ButtonGroup();
         IPField = new JTextField();
         final JButton OKButton = new JButton();
@@ -58,19 +54,8 @@ public class Firstscreen extends JFrame {
         getContentPane().setLayout(new java.awt.GridBagLayout());
         addWindowListener(new ExitProgramListener());
         
-	gameModes.add(LocalGameButton);
-        gameModes.add(HostGameButton);
-	gameModes.add(JoinGameButton);
 		
-        LocalGameButton.setText("Local game");
-        LocalGameButton.addActionListener(new IPFieldSetEnabled(false));
-        LocalGameButton.setSelected( true );
-        
-        HostGameButton.setText("Host game");
-        HostGameButton.addActionListener(new IPFieldSetEnabled(false));
-        
-        JoinGameButton.setText("Join game");
-        JoinGameButton.addActionListener(new IPFieldSetEnabled(true));
+        gameTypeSelection.addPropertyChangeListener(GameTypeSelectionPanel.GAME_MODE_PROERTY_NAME, new IPFieldSetEnabled());
         
         IPField.setText("IP address goes here");
         IPField.setEnabled( false );
@@ -110,9 +95,7 @@ public class Firstscreen extends JFrame {
 			weightOne.weightx = 1;
 			
 			
-			getContentPane().add(LocalGameButton, radioButtons);
-			getContentPane().add(HostGameButton, radioButtons);
-			getContentPane().add(JoinGameButton, radioButtons);
+			getContentPane().add(gameTypeSelection, radioButtons);
 			getContentPane().add(new JLabel("IP address:"), normal);
 			getContentPane().add(IPField, IPFieldConstraints);
 			getContentPane().add(new JLabel("Ex: 123.456.789.123"), IPExampleConstraints);
@@ -127,24 +110,15 @@ public class Firstscreen extends JFrame {
 	}
 	
 	/**
-	 * This takes care of when an action takes place. It will check the 
-	 * action command of all components and then deicde what needs to be done.
-	 *
-	 * @param e the event that has been fired
-	 * 
+	 * Upon a call to actionPerformed, checks compoennt properties,
+	 * sets the Facade's properties appropriately,
+	 * then opens the SecondScreen
 	 */
 	
 	private class ContinueToSecondScreenActionListener implements ActionListener {
 		public void actionPerformed( ActionEvent e ){
 			
-			int gameType;
-			if (JoinGameButton.isSelected()) {
-				gameType = theFacade.CLIENTGAME;
-			} else if (HostGameButton.isSelected()) {
-				gameType = theFacade.HOSTGAME;
-			} else { // assume the last button is selected
-				gameType = theFacade.LOCALGAME;
-			}
+			final int gameType = gameTypeSelection.getGameMode();
 			
 			
 			try {
@@ -160,7 +134,7 @@ public class Firstscreen extends JFrame {
 			theFacade.createPlayer( 2, gameType );
 			
 			
-			if (JoinGameButton.isSelected()) {
+			if (IPField.isEnabled()) {
 				try {
 					
 					//create a URL from the IP address in the IPfield
@@ -185,18 +159,15 @@ public class Firstscreen extends JFrame {
 	}
 
 	/**
-	 * Upon a call to actionPerformed, sets the enabled property 
+	 * Upon a call to propertyChange, sets the enabled property depending
+	 * on the event's NewValue
 	 */
-	
-	private class IPFieldSetEnabled implements ActionListener {
-		private final boolean enabled;
+	private class IPFieldSetEnabled implements java.beans.PropertyChangeListener {
 		
-		public IPFieldSetEnabled(boolean enabled) {
-			this.enabled = enabled;
-		}
-		
-		public void actionPerformed(ActionEvent e) {
-			IPField.setEnabled(enabled);
+		public void propertyChange(java.beans.PropertyChangeEvent e) {
+			if (GameTypeSelectionPanel.GAME_MODE_PROERTY_NAME.equals(e.getPropertyName())) {
+				IPField.setEnabled(e.getNewValue().equals(Facade.CLIENTGAME));
+			}
 		}
 	}
 
