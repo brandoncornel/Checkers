@@ -53,109 +53,79 @@ public class Firstscreen extends JFrame {
         JoinGameButton = new JRadioButton();
         final ButtonGroup gameModes = new ButtonGroup();
         IPField = new JTextField();
-        final JLabel IPLabel = new JLabel();
         final JButton OKButton = new JButton();
         final JButton CancelButton = new JButton();
-        final JLabel IPExampleLabel = new JLabel();
         getContentPane().setLayout(new java.awt.GridBagLayout());
-        java.awt.GridBagConstraints gridBagConstraints1;
         addWindowListener(new ExitProgramListener());
         
 	gameModes.add(LocalGameButton);
         gameModes.add(HostGameButton);
 	gameModes.add(JoinGameButton);
 		
-	LocalGameButton.setActionCommand("local");
         LocalGameButton.setText("Local game");
         LocalGameButton.addActionListener(new IPFieldSetEnabled(false));
         LocalGameButton.setSelected( true );
         
-        gridBagConstraints1 = new GridBagConstraints();
-        gridBagConstraints1.gridx = 1;
-        gridBagConstraints1.gridy = 0;
-        getContentPane().add(LocalGameButton, gridBagConstraints1);
-        
-        
-        HostGameButton.setActionCommand("host");
         HostGameButton.setText("Host game");
         HostGameButton.addActionListener(new IPFieldSetEnabled(false));
         
-        gridBagConstraints1 = new GridBagConstraints();
-        gridBagConstraints1.gridx = 1;
-        gridBagConstraints1.gridy = 1;
-        getContentPane().add(HostGameButton, gridBagConstraints1);
-        
-        
-        JoinGameButton.setActionCommand("join");
         JoinGameButton.setText("Join game");
         JoinGameButton.addActionListener(new IPFieldSetEnabled(true));
         
-        gridBagConstraints1 = new java.awt.GridBagConstraints();
-        gridBagConstraints1.gridx = 1;
-        gridBagConstraints1.gridy = 2;
-        getContentPane().add(JoinGameButton, gridBagConstraints1);
-        
-        
-        IPField.setBackground( Color.white );
-        IPField.setName("textfield5");
-        IPField.setForeground( Color.black);
         IPField.setText("IP address goes here");
         IPField.setEnabled( false );
         
-        gridBagConstraints1 = new GridBagConstraints();
-        gridBagConstraints1.gridx = 2;
-        gridBagConstraints1.gridy = 3;
-        getContentPane().add(IPField, gridBagConstraints1);
-        
-        IPLabel.setName("label10");
-        IPLabel.setBackground(new Color (204, 204, 204));
-        IPLabel.setForeground(Color.black);
-        IPLabel.setText("IP address:");
-        
-        gridBagConstraints1 = new GridBagConstraints();
-        gridBagConstraints1.gridx = 1;
-        gridBagConstraints1.gridy = 3;
-        getContentPane().add(IPLabel, gridBagConstraints1);
-        
         OKButton.setText("OK");
-        OKButton.setActionCommand("ok");
-        OKButton.setName("button6");
         OKButton.setBackground(new Color (212, 208, 200));
-        OKButton.setForeground(Color.black);
         OKButton.addActionListener(new ContinueToSecondScreenActionListener());
         
-        gridBagConstraints1 = new GridBagConstraints();
-        gridBagConstraints1.gridx = 2;
-        gridBagConstraints1.gridy = 5;
-        gridBagConstraints1.insets = new Insets(30, 0, 0, 0);
-        getContentPane().add(OKButton, gridBagConstraints1);
-        
         CancelButton.setText("Cancel");
-        CancelButton.setActionCommand("cancel");
-        CancelButton.setName("button7");
         CancelButton.setBackground(new Color (212, 208, 200));
-        CancelButton.setForeground(Color.black);
         CancelButton.addActionListener(new ExitProgramListener());
         
-        gridBagConstraints1 = new GridBagConstraints();
-        gridBagConstraints1.gridx = 3;
-        gridBagConstraints1.gridy = 5;
-        gridBagConstraints1.insets = new Insets(30, 0, 0, 0);
-        getContentPane().add(CancelButton, gridBagConstraints1);
-        
-        IPExampleLabel.setName("label11");
-        IPExampleLabel.setBackground(new Color (204, 204, 204));
-        IPExampleLabel.setForeground(Color.black);
-        IPExampleLabel.setText("Ex: 123.456.789.123");
-        
-        gridBagConstraints1 = new GridBagConstraints();
-        gridBagConstraints1.gridx = 2;
-        gridBagConstraints1.gridy = 4;
-        getContentPane().add(IPExampleLabel, gridBagConstraints1);
-        
-        
-    }
-
+		{
+			GridBagConstraints normal = new GridBagConstraints();
+			normal.fill = GridBagConstraints.BOTH;
+			
+			GridBagConstraints confirmButtons = new GridBagConstraints();
+			confirmButtons.insets = new Insets(30, 10, 0, 10);
+			confirmButtons.fill = GridBagConstraints.BOTH;
+			
+			GridBagConstraints radioButtons = new GridBagConstraints();
+			radioButtons.gridwidth = GridBagConstraints.REMAINDER;
+			radioButtons.fill = GridBagConstraints.BOTH;
+			
+			GridBagConstraints IPFieldConstraints = new GridBagConstraints();
+			IPFieldConstraints.gridwidth = GridBagConstraints.REMAINDER;
+			IPFieldConstraints.fill = GridBagConstraints.BOTH;
+			IPFieldConstraints.weightx = 2;
+			
+			GridBagConstraints IPExampleConstraints = new GridBagConstraints();
+			IPExampleConstraints = new GridBagConstraints();
+			IPExampleConstraints.gridx = 1;
+			IPExampleConstraints.gridy = 4;
+			IPExampleConstraints.gridwidth = GridBagConstraints.REMAINDER;
+			
+			GridBagConstraints weightOne = new GridBagConstraints();
+			weightOne.weightx = 1;
+			
+			
+			getContentPane().add(LocalGameButton, radioButtons);
+			getContentPane().add(HostGameButton, radioButtons);
+			getContentPane().add(JoinGameButton, radioButtons);
+			getContentPane().add(new JLabel("IP address:"), normal);
+			getContentPane().add(IPField, IPFieldConstraints);
+			getContentPane().add(new JLabel("Ex: 123.456.789.123"), IPExampleConstraints);
+			
+			
+			getContentPane().add(new JPanel(), normal);
+			getContentPane().add(new JPanel(), weightOne);
+			getContentPane().add(OKButton, confirmButtons);
+			getContentPane().add(CancelButton, confirmButtons);
+		}
+		
+	}
+	
 	/**
 	 * This takes care of when an action takes place. It will check the 
 	 * action command of all components and then deicde what needs to be done.
