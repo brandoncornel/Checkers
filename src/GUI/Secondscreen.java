@@ -71,7 +71,6 @@ public class Secondscreen extends JFrame {
         turnLengthField = new JSlider( 10, 300, 120 );
         warningLengthField = new JSlider( 10, 300, 120 );
         getContentPane().setLayout(new GridBagLayout());
-        GridBagConstraints gridBagConstraints1;
         addWindowListener(new ExitProgramListener());
         
         
@@ -95,23 +94,25 @@ public class Secondscreen extends JFrame {
         cancelButton.addActionListener( new ReturnToFirstScreenActionListener() );
         turnLengthField.addChangeListener( new UpdateLabelWithValueChangeListener(turnLengthLabel, "Turn Length") );
         warningLengthField.addChangeListener( new UpdateLabelWithValueChangeListener(WarningLengthLabel, "Warning Length") );
-     
-       
+		
+		
 		//determine what components should be disabled
 		//depending on the game mode
-		if ( gameType == theFacade.LOCALGAME ) {
-		} else if ( gameType == theFacade.HOSTGAME ) {
-			playerTwoLabel.setEnabled( false );
-			playerTwoField.setEnabled( false );
-		} else if ( gameType == theFacade.CLIENTGAME ) {
-			playerOneLabel.setEnabled( false );
-			playerOneField.setEnabled( false );
+		{
+			final boolean firstPlayerIsLocal = (gameType != theFacade.HOSTGAME);
+			final boolean secondPlayerIsLocal = (gameType != theFacade.CLIENTGAME);
 			
-			timedGameBox.setEnabled( false );
-			turnLengthLabel.setEnabled( false );
-			WarningLengthLabel.setEnabled( false );
-			turnLengthField.setEnabled( false );
-			warningLengthField.setEnabled( false );
+			playerTwoLabel.setEnabled( firstPlayerIsLocal );
+			playerTwoField.setEnabled( firstPlayerIsLocal );
+			
+			playerOneLabel.setEnabled( secondPlayerIsLocal );
+			playerOneField.setEnabled( secondPlayerIsLocal );
+			
+			timedGameBox.setEnabled( secondPlayerIsLocal);
+			turnLengthLabel.setEnabled( secondPlayerIsLocal );
+			WarningLengthLabel.setEnabled( secondPlayerIsLocal );
+			turnLengthField.setEnabled( secondPlayerIsLocal );
+			warningLengthField.setEnabled( secondPlayerIsLocal );
 		}
 		
 		
