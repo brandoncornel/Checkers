@@ -178,39 +178,31 @@ public class Secondscreen extends JFrame {
 			theFacade.setPlayerName( 1, playerName1 );
 			theFacade.setPlayerName( 2, playerName2 );
 			
-			//if a timer is desired
-			if ( timedGameBox.isEnabled() && timedGameBox.isSelected() ){
-				
-				//set the 2 timer values
-				try {
-					
+			try {
+				//if a timer is desired
+				if ( timedGameBox.isEnabled() && timedGameBox.isSelected() ){
+					//set the 2 timer values
 					theFacade.setTimer( turnLengthField.getValue(),
 								warningLengthField.getValue() );
-					
-				} catch ( Exception x ) {
+				} else {
+					//else set timer values to a no timer constant
+					theFacade.setTimer( -1, -1 );
+				}
+				
+			} catch ( Exception x ) {
 					
 					JOptionPane.showMessageDialog( null,
 								"Invalid System.Timer value(s)",
 								"Error",
 								JOptionPane.INFORMATION_MESSAGE );
-				}
-			} else {
-				//else set timer values to a no timer constant
-				try {
-					theFacade.setTimer( -1, -1 );
-				} catch ( Exception x ) {
-					throw new AssertionError("setTimer did not accept parameters of (-1, -1)");
-				}
-				
 			}
 			
 			//start the game
 			theFacade.startGame();
 			//hide this screen, make and show the GUI
+			theFirst.dispose();
 			Secondscreen.this.dispose();
-			CheckerGUI GUI = new CheckerGUI( theFacade,
-					theFacade.getPlayerName( 1 ),
-					theFacade.getPlayerName( 2 ) );
+			CheckerGUI GUI = new CheckerGUI( theFacade, playerName1, playerName2 );
 			GUI.setVisible(true);
 			
 		}//end of actionPerformed
@@ -224,7 +216,9 @@ public class Secondscreen extends JFrame {
 		}
 	}
 	
-	
+	/**
+	 * Upon a call to actionPerformed, disposes SecondScreen and shows FirstScreen
+	 */
 	private class ReturnToFirstScreenActionListener implements ActionListener {
 		public void actionPerformed( ActionEvent e ){
 			Secondscreen.this.dispose();
@@ -232,6 +226,10 @@ public class Secondscreen extends JFrame {
 		}
 	}
 	
+	/**
+	 * Upon a call to actionPerformed, enabled to disabled turnLengthField and warningLengthField,
+	 * making it's enabledness match the source's selected value.
+	 */
 	private class EnableTimerSettingsActionListener implements ActionListener {
 		public void actionPerformed( ActionEvent e ){
 			AbstractButton src = (AbstractButton) e.getSource();
@@ -241,6 +239,9 @@ public class Secondscreen extends JFrame {
 		}
 	}
 	
+	/**
+	 * Upon a stateChanged, changes toUpdate's text to indicate a JSlider's value
+	 */
 	private class UpdateLabelWithValueChangeListener implements ChangeListener {
 		private final JLabel toUpdate;
 		private final String caption;
