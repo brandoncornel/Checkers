@@ -18,7 +18,7 @@ public class Firstscreen extends JFrame {
   
     // Variables declaration - do not modify
     private GameTypeSelectionPanel gameTypeSelection;
-    private JTextField IPField;
+    private JFormattedTextField IPField;
     // End of variables declaration
 
 
@@ -48,7 +48,7 @@ public class Firstscreen extends JFrame {
 
         gameTypeSelection = new GameTypeSelectionPanel();
         final ButtonGroup gameModes = new ButtonGroup();
-        IPField = new JTextField();
+        IPField = new JFormattedTextField(new UrlFormat());
         final JButton OKButton = new JButton();
         final JButton CancelButton = new JButton();
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -135,20 +135,8 @@ public class Firstscreen extends JFrame {
 			
 			
 			if (IPField.isEnabled()) {
-				try {
-					
-					//create a URL from the IP address in the IPfield
-					URL address = new URL( "http://" + IPField.getText() );
-					//set the host
-					theFacade.setHost( address );
-											
-					//catch any exceptions
-				} catch ( MalformedURLException x ) {
-					JOptionPane.showMessageDialog( Firstscreen.this,
-								"Invalid host address",
-								"Error",
-								JOptionPane.INFORMATION_MESSAGE );
-				}
+				//set the host
+				theFacade.setHost( (URL) IPField.getValue() );
 			}
 			
 			//hide the GUI.Firstscreen, make a GUI.Secondscreen and show it
@@ -157,7 +145,7 @@ public class Firstscreen extends JFrame {
 			
 		}//end of actionPerformed
 	}
-
+	
 	/**
 	 * Upon a call to propertyChange, sets the enabled property depending
 	 * on the event's NewValue
@@ -167,6 +155,28 @@ public class Firstscreen extends JFrame {
 		public void propertyChange(java.beans.PropertyChangeEvent e) {
 			if (GameTypeSelectionPanel.GAME_MODE_PROERTY_NAME.equals(e.getPropertyName())) {
 				IPField.setEnabled(e.getNewValue().equals(Facade.CLIENTGAME));
+			}
+		}
+	}
+	
+	/**
+	 * A format that creates http URLs from a hostname.
+	 */
+	private class UrlFormat extends java.text.Format {
+		public StringBuffer format(Object obj, StringBuffer toAppendTo, java.text.FieldPosition pos) {
+			URL obj2 = (URL) obj;
+			toAppendTo.append(obj2.getHost());
+			return toAppendTo;
+		}
+		
+		public URL parseObject(String source, java.text.ParsePosition pos) {
+			try {
+				URL retVal = new URL("http", source.substring(pos.getIndex()), "/");
+				pos.setIndex(source.length());
+				return retVal;
+			} catch (MalformedURLException e) {
+				pos.setErrorIndex(pos.getIndex());
+				return null;
 			}
 		}
 	}
