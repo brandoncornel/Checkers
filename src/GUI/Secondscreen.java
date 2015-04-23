@@ -19,7 +19,6 @@ public class Secondscreen extends JFrame {
     
     private final Facade theFacade;
     private final Firstscreen theFirst;
-    private final int gameType;
     
     // Variables declaration
     private JCheckBox timedGameBox;
@@ -45,10 +44,9 @@ public class Secondscreen extends JFrame {
         super( "Second Screen" );
         theFacade = f;
         theFirst = first;
-        gameType = type;
         
-        initComponents ();
-        pack ();
+        initComponents(type);
+        pack();
     }
 
 
@@ -57,7 +55,7 @@ public class Secondscreen extends JFrame {
      * initialize the form.
      */
 	
-    private void initComponents() {
+    private void initComponents(int gameType) {
 
         timedGameBox = new JCheckBox();
         final JLabel playerOneLabel = new JLabel();
@@ -89,9 +87,11 @@ public class Secondscreen extends JFrame {
         okButton.setText("OK");
         okButton.setBackground(new Color (212, 208, 200));
         okButton.addActionListener( new ContinueToCheckerGuiActionListener() );
+        
         cancelButton.setText("Cancel");
         cancelButton.setBackground(new Color (212, 208, 200));
         cancelButton.addActionListener( new ReturnToFirstScreenActionListener() );
+        
         turnLengthField.addChangeListener( new UpdateLabelWithValueChangeListener(turnLengthLabel, "Turn Length") );
         warningLengthField.addChangeListener( new UpdateLabelWithValueChangeListener(WarningLengthLabel, "Warning Length") );
 		
@@ -99,8 +99,8 @@ public class Secondscreen extends JFrame {
 		//determine what components should be disabled
 		//depending on the game mode
 		{
-			final boolean firstPlayerIsLocal = (gameType != theFacade.HOSTGAME);
-			final boolean secondPlayerIsLocal = (gameType != theFacade.CLIENTGAME);
+			final boolean firstPlayerIsLocal = (gameType != Facade.HOSTGAME);
+			final boolean secondPlayerIsLocal = (gameType != Facade.CLIENTGAME);
 			
 			playerTwoLabel.setEnabled( firstPlayerIsLocal );
 			playerTwoField.setEnabled( firstPlayerIsLocal );
@@ -170,7 +170,7 @@ public class Secondscreen extends JFrame {
 	 * @param the event fired
 	 */
 	
-	private class ContinueToCheckerGuiActionListener implements ActionListener {
+	private final class ContinueToCheckerGuiActionListener implements ActionListener {
 		public void actionPerformed( ActionEvent e ){
 			final String playerName1 = fieldToString(playerOneField, "player1");
 			final String playerName2 = fieldToString(playerTwoField, "player2");
@@ -219,7 +219,7 @@ public class Secondscreen extends JFrame {
 	/**
 	 * Upon a call to actionPerformed, disposes SecondScreen and shows FirstScreen
 	 */
-	private class ReturnToFirstScreenActionListener implements ActionListener {
+	private final class ReturnToFirstScreenActionListener implements ActionListener {
 		public void actionPerformed( ActionEvent e ){
 			Secondscreen.this.dispose();
 			theFirst.setVisible(true);
@@ -230,7 +230,7 @@ public class Secondscreen extends JFrame {
 	 * Upon a call to actionPerformed, enabled to disabled turnLengthField and warningLengthField,
 	 * making it's enabledness match the source's selected value.
 	 */
-	private class EnableTimerSettingsActionListener implements ActionListener {
+	private final class EnableTimerSettingsActionListener implements ActionListener {
 		public void actionPerformed( ActionEvent e ){
 			AbstractButton src = (AbstractButton) e.getSource();
 			
@@ -242,7 +242,7 @@ public class Secondscreen extends JFrame {
 	/**
 	 * Upon a stateChanged, changes toUpdate's text to indicate a JSlider's value
 	 */
-	private class UpdateLabelWithValueChangeListener implements ChangeListener {
+	private final static class UpdateLabelWithValueChangeListener implements ChangeListener {
 		private final JLabel toUpdate;
 		private final String caption;
 		

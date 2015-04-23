@@ -31,7 +31,7 @@ public class Firstscreen extends JFrame {
 
     public Firstscreen( Facade facade ) {
 
-	super( "First screen" );
+        super( "First screen" );
         theFacade = facade;
         initComponents();
         pack();
@@ -47,7 +47,6 @@ public class Firstscreen extends JFrame {
     private void initComponents() {
 
         gameTypeSelection = new GameTypeSelectionPanel();
-        final ButtonGroup gameModes = new ButtonGroup();
         IPField = new JFormattedTextField(new UrlFormat());
         final JButton OKButton = new JButton();
         final JButton CancelButton = new JButton();
@@ -106,7 +105,6 @@ public class Firstscreen extends JFrame {
 			getContentPane().add(OKButton, confirmButtons);
 			getContentPane().add(CancelButton, confirmButtons);
 		}
-		
 	}
 	
 	/**
