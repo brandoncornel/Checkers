@@ -12,7 +12,7 @@ mainClass := Some("GUI.PlayCheckers")
 
 libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"
 
-// javacOptions in Compile ++= Seq("-Xlint:deprecation", "-Xlint:unchecked")
+javacOptions in Compile ++= Seq("-Xlint:deprecation", "-Xlint:unchecked")
 
 crossPaths := true
 
