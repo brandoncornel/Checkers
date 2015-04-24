@@ -24,8 +24,7 @@ public class Secondscreen {
     
     // Variables declaration
     private JCheckBox timedGameBox;
-    private JSlider turnLengthField;
-    private JSlider warningLengthField;
+    private TimerDataPanel timerData;
     private final JFrame frame;
     // End of variables declaration
 	
@@ -80,12 +79,9 @@ public class Secondscreen {
         final JLabel playerTwoLabel = new JLabel();
         final JTextField playerOneField = new JTextField();
         final JTextField playerTwoField = new JTextField();
-        final JLabel turnLengthLabel = new JLabel();
-        final JLabel WarningLengthLabel = new JLabel();
         final JButton okButton = new JButton();
         final JButton cancelButton = new JButton();
-        turnLengthField = new JSlider( 10, 300, 120 );
-        warningLengthField = new JSlider( 10, 300, 120 );
+        timerData = new TimerDataPanel();
         frame.getContentPane().setLayout(new GridBagLayout());
         frame.addWindowListener(new ExitProgramListener());
         
@@ -101,9 +97,6 @@ public class Secondscreen {
 		playerTwoField.getDocument().addDocumentListener(new SetPlayerNameDocumentListener(2));
         playerOneField.setText("Enter name");
         playerTwoField.setText("Enter name");
-		
-        turnLengthLabel.setText("Turn Length ( " + turnLengthField.getValue() + " seconds )");
-        WarningLengthLabel.setText("Warning Length ( " + warningLengthField.getValue() + " seconds )");
         
         okButton.setText("OK");
         okButton.setBackground(new Color (212, 208, 200));
@@ -113,11 +106,7 @@ public class Secondscreen {
         cancelButton.setBackground(new Color (212, 208, 200));
         cancelButton.addActionListener( new ReturnToFirstScreenActionListener() );
         
-        turnLengthField.addChangeListener( new UpdateLabelWithValueChangeListener(turnLengthLabel, "Turn Length") );
-        warningLengthField.addChangeListener( new UpdateLabelWithValueChangeListener(WarningLengthLabel, "Warning Length") );
-		
-		
-		//determine what components should be disabled
+        //determine what components should be disabled
 		//depending on the game mode
 		{
 			final boolean firstPlayerIsLocal = (gameType != Facade.HOSTGAME);
@@ -136,19 +125,12 @@ public class Secondscreen {
 			}
 			
 			timedGameBox.setEnabled( secondPlayerIsLocal);
-			turnLengthLabel.setEnabled( secondPlayerIsLocal );
-			WarningLengthLabel.setEnabled( secondPlayerIsLocal );
-			turnLengthField.setEnabled( secondPlayerIsLocal );
-			warningLengthField.setEnabled( secondPlayerIsLocal );
+			timerData.setEnabled(secondPlayerIsLocal);
 		}
 		
-		
 		{
-			final GridBagConstraints sliderLabelConstraints = new GridBagConstraints();
-			sliderLabelConstraints.fill = GridBagConstraints.BOTH;
-			
-			final GridBagConstraints sliderValueConstraints = new GridBagConstraints();
-			sliderValueConstraints.gridwidth = GridBagConstraints.REMAINDER;
+			final GridBagConstraints remainderConstraints = new GridBagConstraints();
+			remainderConstraints.gridwidth = GridBagConstraints.REMAINDER;
 			
 			final GridBagConstraints nameLabelConstraints = new GridBagConstraints();
 			nameLabelConstraints.insets = new Insets(5, 0, 0, 0);
@@ -180,10 +162,7 @@ public class Secondscreen {
 			frame.getContentPane().add(playerTwoLabel, nameLabelConstraints);
 			frame.getContentPane().add(playerTwoField, nameBoxConstraints);
 			frame.getContentPane().add(timedGameBox, timedGameBoxConstraints);
-			frame.getContentPane().add(turnLengthLabel, sliderLabelConstraints);
-			frame.getContentPane().add(turnLengthField, sliderValueConstraints);
-			frame.getContentPane().add(WarningLengthLabel, sliderLabelConstraints);
-			frame.getContentPane().add(warningLengthField, sliderValueConstraints);
+			frame.getContentPane().add(timerData, remainderConstraints);
 			frame.getContentPane().add(okButton, okButtonConstraints);
 			frame.getContentPane().add(cancelButton, cancelButtonConstraints);
 		}
@@ -207,8 +186,8 @@ public class Secondscreen {
 				//if a timer is desired
 				if ( timedGameBox.isEnabled() && timedGameBox.isSelected() ){
 					//set the 2 timer values
-					theFacade.setTimer( turnLengthField.getValue(),
-								warningLengthField.getValue() );
+					theFacade.setTimer( timerData.getTurnLength(),
+								timerData.getWarningLength() );
 				} else {
 					//else set timer values to a no timer constant
 					theFacade.setTimer( -1, -1 );
@@ -251,35 +230,7 @@ public class Secondscreen {
 		public void actionPerformed( ActionEvent e ){
 			AbstractButton src = (AbstractButton) e.getSource();
 			
-			turnLengthField.setEnabled( src.isSelected() );
-			warningLengthField.setEnabled( src.isSelected() );
-		}
-	}
-	
-	/**
-	 * Upon a stateChanged, changes toUpdate's text to indicate a JSlider's value
-	 */
-	private final static class UpdateLabelWithValueChangeListener implements ChangeListener {
-		private final JLabel toUpdate;
-		private final String caption;
-		
-		public UpdateLabelWithValueChangeListener(JLabel toUpdate, String caption) {
-			this.toUpdate = toUpdate;
-			this.caption = caption;
-		}
-		
-		/*
-		 * This changes the text on the labels
-		 *
-		 * @param e the change event
-		 *
-		 */
-		public void stateChanged( ChangeEvent e ) {
-			JSlider src = (JSlider) e.getSource();
-			
-			this.toUpdate.setText(this.caption + " ( "
-					+ src.getValue() 
-					+ " seconds )");
+			timerData.setEnabled( src.isSelected() );
 		}
 	}
 	
