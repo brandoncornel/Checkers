@@ -20,6 +20,7 @@ import java.net.*;
 import javax.swing.*;
 import javax.swing.Timer;
 
+
 /**
  *
  * This class is a part of the main functionality of the checkers 
