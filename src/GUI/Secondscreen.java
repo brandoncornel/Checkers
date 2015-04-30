@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.event.*;
+import javax.swing.text.Document;
 import System.Facade;
 
 
@@ -22,8 +23,6 @@ public class Secondscreen extends JFrame {
     
     // Variables declaration
     private JCheckBox timedGameBox;
-    private JTextField playerOneField;
-    private JTextField playerTwoField;
     private JSlider turnLengthField;
     private JSlider warningLengthField;
     // End of variables declaration
@@ -60,8 +59,8 @@ public class Secondscreen extends JFrame {
         timedGameBox = new JCheckBox();
         final JLabel playerOneLabel = new JLabel();
         final JLabel playerTwoLabel = new JLabel();
-        playerOneField = new JTextField();
-        playerTwoField = new JTextField();
+        final JTextField playerOneField = new JTextField();
+        final JTextField playerTwoField = new JTextField();
         final JLabel turnLengthLabel = new JLabel();
         final JLabel WarningLengthLabel = new JLabel();
         final JButton okButton = new JButton();
@@ -79,8 +78,11 @@ public class Secondscreen extends JFrame {
         
         playerOneLabel.setText("Model.Player 1:");
         playerTwoLabel.setText("Model.Player 2:");
+		playerOneField.getDocument().addDocumentListener(new SetPlayerNameDocumentListener(1));
+		playerTwoField.getDocument().addDocumentListener(new SetPlayerNameDocumentListener(2));
         playerOneField.setText("Enter name");
         playerTwoField.setText("Enter name");
+		
         turnLengthLabel.setText("Turn Length ( " + turnLengthField.getValue() + " seconds )");
         WarningLengthLabel.setText("Warning Length ( " + warningLengthField.getValue() + " seconds )");
         
@@ -104,9 +106,15 @@ public class Secondscreen extends JFrame {
 			
 			playerTwoLabel.setEnabled( firstPlayerIsLocal );
 			playerTwoField.setEnabled( firstPlayerIsLocal );
+			if (!firstPlayerIsLocal) {
+				theFacade.setPlayerName(2, "player2");
+			}
 			
 			playerOneLabel.setEnabled( secondPlayerIsLocal );
 			playerOneField.setEnabled( secondPlayerIsLocal );
+			if (!secondPlayerIsLocal) {
+				theFacade.setPlayerName(1, "player1");
+			}
 			
 			timedGameBox.setEnabled( secondPlayerIsLocal);
 			turnLengthLabel.setEnabled( secondPlayerIsLocal );
@@ -172,12 +180,6 @@ public class Secondscreen extends JFrame {
 	
 	private final class ContinueToCheckerGuiActionListener implements ActionListener {
 		public void actionPerformed( ActionEvent e ){
-			final String playerName1 = fieldToString(playerOneField, "player1");
-			final String playerName2 = fieldToString(playerTwoField, "player2");
-			
-			theFacade.setPlayerName( 1, playerName1 );
-			theFacade.setPlayerName( 2, playerName2 );
-			
 			try {
 				//if a timer is desired
 				if ( timedGameBox.isEnabled() && timedGameBox.isSelected() ){
@@ -202,18 +204,10 @@ public class Secondscreen extends JFrame {
 			//hide this screen, make and show the GUI
 			theFirst.dispose();
 			Secondscreen.this.dispose();
-			CheckerGUI GUI = new CheckerGUI( theFacade, playerName1, playerName2 );
+			CheckerGUI GUI = new CheckerGUI( theFacade, theFacade.getPlayerName(1), theFacade.getPlayerName(2) );
 			GUI.setVisible(true);
 			
 		}//end of actionPerformed
-		
-		private String fieldToString(JTextField f, String orElse) {
-			if (f.isEnabled() && "".equals(f.getText())) {
-				return orElse;
-			} else {
-				return f.getText();
-			}
-		}
 	}
 	
 	/**
@@ -263,6 +257,31 @@ public class Secondscreen extends JFrame {
 			this.toUpdate.setText(this.caption + " ( "
 					+ src.getValue() 
 					+ " seconds )");
+		}
+	}
+	
+	/**
+	 * Upon a call to any DocumentListener method, updates facade such that it
+	 * sets the name of the specified player to the contents of the parameter document
+	 */
+	private final class SetPlayerNameDocumentListener implements DocumentListener {
+		private final int playerNumber;
+		
+		public SetPlayerNameDocumentListener(int playerNumber) {
+			this.playerNumber = playerNumber;
+		}
+		
+		public void insertUpdate(DocumentEvent e) { this.changedUpdate(e); }
+		public void removeUpdate(DocumentEvent e) { this.changedUpdate(e); }
+		
+		public void changedUpdate(DocumentEvent e) {
+			Document src = e.getDocument();
+			try {
+				String name = src.getText(0, src.getLength());
+				theFacade.setPlayerName(playerNumber, name);
+			} catch (javax.swing.text.BadLocationException ex) {
+				throw new AssertionError("Document.getText is specified to accept both '0' and 'Document#getLength()' as valid positions.", ex);
+			}
 		}
 	}
 	
