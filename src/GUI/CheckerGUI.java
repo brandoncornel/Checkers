@@ -38,10 +38,10 @@ import java.util.List;
 
 public class CheckerGUI extends JFrame implements ActionListener{
 
-    private String blueSingle = "file:BlueSingle.gif";
-    private String whiteSingle = "file:WhiteSingle.gif";
-    private String blueKing = "file:BlueKing.gif";
-    private String whiteKing = "file:WhiteKing.gif";
+    private final String blueSingle = "GUI/BlueSingle.gif";
+    private final String whiteSingle = "GUI/WhiteSingle.gif";
+    private final String blueKing = "GUI/BlueKing.gif";
+    private final String whiteKing = "GUI/WhiteKing.gif";
 
 
     private static Facade theFacade; //the facade
@@ -312,12 +312,8 @@ public class CheckerGUI extends JFrame implements ActionListener{
 
     private void placePic(JButton temp, int i, String pic){
         temp = (JButton)possibleSquares.get(i);
-        try{
-            temp.setIcon(
-                    new ImageIcon( new URL(pic) ));
-        }catch( MalformedURLException e ){
-            System.out.println(e.getMessage());
-        }
+        temp.setIcon( new ImageIcon(
+            this.getClass().getClassLoader().getResource( pic )));
     }
 
     public boolean occupAndBlue(Board board, int i){
@@ -338,6 +334,7 @@ public class CheckerGUI extends JFrame implements ActionListener{
                 }else if((isKing(board,i) )) {
                     placePic(temp, i, blueKing);
                 }
+            }
             else if( board.colorAt( i ) == Color.white ){
                 if((!isKing(board,i))){
                     placePic(temp, i, whiteSingle);
@@ -345,7 +342,7 @@ public class CheckerGUI extends JFrame implements ActionListener{
                     placePic(temp,i,whiteKing);
                 }
             }
-            }else {
+            else {
                 //show no picture
                 temp = (JButton)possibleSquares.get(i);
                 temp.setIcon( null );
