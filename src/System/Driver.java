@@ -230,7 +230,7 @@ public class Driver {
     /**
      * This method is called if a draw has been offered
      * 
-     * @param the player who offered the draw
+     * @param player player who offered the draw
      * 
      */    
     public void drawOffered( Player player ){
@@ -262,7 +262,7 @@ public class Driver {
      * Ends the game as a result of a player quitting, notifying 
      * each player
      * 
-     * @param the player who quit
+     * @param player player who quit
      */
     public void endInQuit( Player player ){
 	playerOne.endOfGame( player.getName() + " quit the game" );
@@ -393,7 +393,7 @@ public class Driver {
     /**
      * Select the type of game
      *
-     * @param mode the mode (0 local, 1 host, 2 client) of the game
+     * @param newMode the mode (0 local, 1 host, 2 client) of the game
      *
      * @pre  Players have not been created
      * @post Mode is set
