@@ -21,8 +21,6 @@ import java.awt.*;
 public class KingPiece implements Piece {
 
     private Color color;
-//   private static int KING = 1; // the king type
-//   private int type; // the type of his object
   
    /**
     * This constructor creates a king piece object
@@ -33,19 +31,7 @@ public class KingPiece implements Piece {
     */
    public KingPiece( Color c ) {
         this.color = c;
-//	   super( c );
-//	   type = KING;
    }
-   
-   /**
-    * This method returns the type of piece that this object is 
-    * 
-    * @return 1 for the king piece representation
-    */
-//   public int getType() {
-//
-//	   return type;
-//   }
 
     @Override
     public Color getColor() {

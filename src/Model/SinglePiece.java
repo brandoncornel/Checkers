@@ -23,8 +23,6 @@ import java.awt.*;
 public class SinglePiece implements Piece {
 
     private Color color;
-//   private static int SINGLE = 0; // this is a single type
-//   private int type; // the type of the piece
    
    /**
     * This constructor creates a single piece checker object
@@ -34,21 +32,8 @@ public class SinglePiece implements Piece {
     * @param pm - the possible moves of this single piece
     */
    public SinglePiece( Color c  ) {
-
        this.color = c;
-//	    super( c );
-//		type = SINGLE;
    }
-   
-   /**
-    * This method returns that the type of the checker is single
-    * 
-    * @return type which is 0 for single
-    */
-//   public int getType() {
-//
-//	   return type;
-//   }
 
     @Override
     public Color getColor() {
