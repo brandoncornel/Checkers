@@ -35,7 +35,7 @@ public class Rules {
     private int secondSpots[] = { -18, -14, 14, 18 }; // An array of spots
 	      					    // adj. to adjacentSpots.
     private int middle = 0;  // The space of a piece that gets jumped
-    private final int KING = 1; // Constant to represent a king piece.
+    //private final int KING = 1; // Constant to represent a king piece.
     private Vector leftWallPieces = new Vector(); // Positions of the left
 	       				         // wall spaces.
     private Vector rightWallPieces = new Vector(); // Positions of the right
@@ -81,16 +81,14 @@ public class Rules {
 	    int start = currentMove.startLocation(); // Start of piece.
 	    int end = currentMove.endLocation();  // Attempted end location
 	                                             // of the piece.
-	    int pieceType = theBoard.getPieceAt( start ).getType();// Type of
-	                                                      // the piece.
+//	    int pieceType = theBoard.getPieceAt( start ).getType();// Type of the piece.
 	    // Contains any possible moves if the piece is on the wall.
         Vector wallMoves = new Vector();
 	    Vector pieces = new Vector();
 	    Vector tempVec = new Vector();
 	    Vector startVec = new Vector();
 	    //Vector possibleJumps = new Vector();
-	    Vector possibleJumps = checkForPossibleJumps( start, pieceType,
-							  player );
+	    Vector possibleJumps = checkForPossibleJumps( start, player );
 	    // Check all pieces for jumps.
 	    //if ( player.getColor() == Color.white ) {
 		//pieces = theBoard.whitePieces(); 
@@ -102,7 +100,7 @@ public class Rules {
 		for ( int count = 1; count < 64; count++ ) {
 			if ( theBoard.occupied( count ) ) {
 				if ( theBoard.getPieceAt( count ).getColor() == player.getColor() ) {
-					tempVec = checkForPossibleJumps( count, pieceType, player );
+					tempVec = checkForPossibleJumps( count, player );
 					if ( !tempVec.isEmpty() ) {
 						startVec.addElement( new Integer( count ) );
 						possibleJumps.addAll( tempVec );
@@ -120,8 +118,7 @@ public class Rules {
 		// If there is a possible jump it must be made so the end 
 		// position must match one of the possible jumps.
 		if ( startVec.contains( new Integer( start ) ) ) {     
-		    possibleJumps = checkForPossibleJumps( start, pieceType, 
-							   player );
+		    possibleJumps = checkForPossibleJumps( start, player );
 		    if ( possibleJumps.contains( new Integer( end ) ) ) {
 			// Model.Move the piece
 			theBoard.movePiece( start, end ); 
@@ -129,8 +126,7 @@ public class Rules {
 			theBoard.removePiece( middle );
 			middle = 0;		
 			// And if there is a possible multiple jump.
-			anotherMove = checkForOtherPossibleJump( end, pieceType,
-								 player );
+			anotherMove = checkForOtherPossibleJump( end, player );
 			// If there is another jump to make, next turn will be
 			// current player's and he must move last piece moved.
 			if ( anotherMove ) {
@@ -150,8 +146,7 @@ public class Rules {
 		    // valid then the move is legal.
 		    if ( leftWallPieces.contains( new Integer( start ) ) ||
 			 rightWallPieces.contains( new Integer( start ) ) ) {
-			wallMoves.addAll( wallPieceMoves( start, false, 
-							  pieceType, player ) );
+			wallMoves.addAll( wallPieceMoves( start, false, player ) );
 			if ( wallMoves.contains( new Integer( end ) ) ) {
 			    retval = true;
 			}
@@ -167,7 +162,7 @@ public class Rules {
 		    if ( retval ) {
                         
 			// If a move was made, see if the piece should be kinged
-			checkForMakeKing( end, pieceType );
+			checkForMakeKing( end );
                         gameOver = checkEndCond();
 			if ( gameOver ) {
 			    theDriver.endGame( player.getName() +  
@@ -185,7 +180,7 @@ public class Rules {
 	    if ( !retval ) {
 		theDriver.endTurn( player, -1 );
 	    }
-            checkForMakeKing(end, pieceType);
+            checkForMakeKing(end);
         } catch ( Exception e ) { }
 	
 	return retval;
@@ -246,16 +241,15 @@ public class Rules {
 		     temp2 ) {
 		    // If there are moves or jumps possible they will be in 
 		    // their respective vector.
-		    int type =theBoard.getPieceAt( count ).getType();  
+//		    int type =theBoard.getPieceAt( count ).getType();
 		    if ( theBoard.getPieceAt( count ).getColor() ==
 			 Color.white ) {
 			player = currentMove.getPlayer();
 		    } else {
 			player = theDriver.getOppositePlayer();
 		    }
-		    possibleJumps = checkForPossibleJumps( count, type, player);
-		    possibleMoves = checkForPossibleMoves( count, 
-			      theBoard.getPieceAt( count ).getType(), player );
+		    possibleJumps = checkForPossibleJumps( count, player);
+		    possibleMoves = checkForPossibleMoves( count, player );
 		    // If either vector contains a move, drop out of the loop. 
 		    if ( !possibleJumps.isEmpty() || !possibleMoves.isEmpty() ) {
 			done = true;
@@ -300,13 +294,11 @@ public class Rules {
      *  player. If there are any possible jumps the valid end positions 
      *  will be added to the vector.
      *
-     *  @param piecePosition - start position of piece. 
-     *  @param pieceType     - type of piece.
+     *  @param piecePosition - start position of piece.
      *
      *  @return possibleJumps which contains end positions of possible jumps.
      */	
-    private Vector checkForPossibleJumps( int piecePosition, int pieceType, 
-					  Player aPlayer ) {
+    private Vector checkForPossibleJumps( int piecePosition, Player aPlayer ) {
 	
 	Vector possibleJumps = new Vector();
 	boolean adjacentSpace = false;
@@ -319,11 +311,10 @@ public class Rules {
         int loop = 0;
 	
 	// Get available moves if the piece is on a wall.
-	possibleJumps.addAll( wallPieceMoves( piecePosition,
-					      true, pieceType, player ) );
+	possibleJumps.addAll( wallPieceMoves( piecePosition, true, player ) );
 	
 	// If the piece is a king.
-	if ( pieceType == theBoard.KING ) {       
+	if ( isKing(piecePosition)) {
 	    
 	    // King is on top wall.
             if ( piecePosition <= 7 ) {
@@ -348,8 +339,8 @@ public class Rules {
 						      adjacentSpots[i] ) ) ) {
 		    adjacentSpace = theBoard.occupied( piecePosition + 
 						       adjacentSpots[i] );
-		    aPiece = theBoard.getPieceAt( piecePosition +
-						  adjacentSpots[i] );
+            aPiece = theBoard.getPieceAt(piecePosition +
+                    adjacentSpots[i]);
 		    
 		    if ( adjacentSpace && 
 			 ( aPiece.getColor() != player.getColor() ) ) {
@@ -383,8 +374,8 @@ public class Rules {
 		     !rightWallPieces.contains( new Integer( piecePosition +
 						       adjacentSpots[j] ) ) ) {
 		    // Check to see if there is a piece this piece can jump over.
-		    adjacentSpace = theBoard.occupied( piecePosition + 
-						       adjacentSpots[j] );
+		    adjacentSpace = theBoard.occupied(piecePosition +
+                    adjacentSpots[j]);
 		    // Get that piece
                     
                     if( adjacentSpace ){
@@ -455,15 +446,12 @@ public class Rules {
      *  be made with the same piece.
      *
      *  @param piecePosition - start position of the piece.
-     *  @param pieceType     - the type of the piece.
      *
      *  @return retval true if there is a nother jump that must be made.
      *
      *  @pre A jump has been made.
      */   
-    private boolean checkForOtherPossibleJump( int piecePosition,
-					       int pieceType,
-					       Player aPlayer ) {
+    private boolean checkForOtherPossibleJump( int piecePosition, Player aPlayer ) {
 	
 	boolean retval = false;
 	
@@ -477,10 +465,10 @@ public class Rules {
 	    
 	    // Get available moves if the piece is on a wall.
 	    possibleJumps.addAll( wallPieceMoves( piecePosition, 
-						  true, pieceType, player ) );
+						  true, player ) );
 	    
 	    // If the piece is a king.
-	    if ( pieceType == theBoard.KING ) {
+	    if ( isKing(piecePosition) ) {
 		
 		// Check to see if piece is adjacent to piece of opposite color.
 		// If there are, add possible end locations to vector.
@@ -599,7 +587,7 @@ public class Rules {
 	Player player = aPlayer;
 
 	// If piece is a king
-	if ( theBoard.getPieceAt( piecePosition ).getType() == theBoard.KING ) {
+	if ( isKing(piecePosition) ) {
 	    //Check if piece is on wall. If it is it's movement is restricted.
 	    if ( leftWallPieces.contains( new Integer( piecePosition ) ) ||
                  rightWallPieces.contains( new Integer( piecePosition ) )) {
@@ -663,8 +651,7 @@ public class Rules {
      *
      *  @return Vector of possible end positions for the piece.
      */
-    private Vector checkForPossibleMoves( int piecePosition, int pieceType,
-					  Player aPlayer ) {
+    private Vector checkForPossibleMoves( int piecePosition, Player aPlayer ) {
 	
         
 	Vector possibleMoves = new Vector();
@@ -672,11 +659,10 @@ public class Rules {
 	Player player = aPlayer;
 	
 	// Get available moves if the piece is on a wall.
-	possibleMoves.addAll( wallPieceMoves( piecePosition, false,
-					      pieceType, player ) );
+	possibleMoves.addAll( wallPieceMoves( piecePosition, false, player ) );
 	
 	// If the piece is a king.
-  	if ( pieceType == theBoard.KING ) {
+  	if ( isKing(piecePosition) ) {
   	    // Check to see if piece is adjacent to piece of opposite color.
   	    // If there are, add possible end locations to vector.
   	    for ( int i = 0; i <= adjacentSpots.length; i++ ) {
@@ -752,8 +738,7 @@ public class Rules {
      *
      *  @return moves, a vector of end positions for the piece.
      */
-    private Vector wallPieceMoves( int piecePosition, boolean jump, 
-				   int pieceType , Player aPlayer ) {
+    private Vector wallPieceMoves( int piecePosition, boolean jump, Player aPlayer ) {
 	
 	Vector moves = new Vector();
 	
@@ -764,7 +749,7 @@ public class Rules {
 	    Player player = aPlayer;
 	    boolean endSpace = false;
 	    
-	    if ( pieceType == theBoard.KING ) {
+	    if ( isKing(piecePosition) ) {
 		if ( leftWallPieces.contains( new Integer( piecePosition ) ) ) {
 		    if ( jump ) {
 			adjacentSpace = theBoard.occupied( piecePosition - 7 );
@@ -973,20 +958,20 @@ public class Rules {
      *
      * @return true if the piece needs to be kinged.
      */
-    private boolean checkForMakeKing( int end, int pieceType ) {
+    private boolean checkForMakeKing( int end ) {
 	
 	boolean retval = false;
 
 	try {
-	    if ( pieceType == Board.SINGLE ) {
+	    if ( !isKing(end) ) {
 		if ( currentMove.getPlayer().getColor() == Color.white ) {
 		    if ( end == 1 || end == 3 || end == 5 || end == 7 ) {
-			theBoard.kingPiece( end );
+			theBoard.setPieceState(end);
 			retval = true;
 		    }
 		} else {
 		    if ( end == 56 || end == 58 || end == 60 || end == 62 ) {
-			theBoard.kingPiece( end );
+			theBoard.setPieceState(end);
 			retval = true;
 		    }
 		}
@@ -997,6 +982,10 @@ public class Rules {
 	
 	return retval;
 	
+    }
+
+    private boolean isKing(int piecePosition){
+        return theBoard.getPieceAt(piecePosition) instanceof KingPiece;
     }
     
 }//Model.Rules.java

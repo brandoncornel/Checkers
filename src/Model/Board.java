@@ -25,8 +25,8 @@ import java.awt.*;
 public class Board {
 
    private Piece pieces[]; // the pieces that are on the board
-   public static int SINGLE = 0;
-   public static int KING = 1;
+//   public static int SINGLE = 0;
+//   public static int KING = 1;
 
 
    /**
@@ -144,7 +144,7 @@ public class Board {
     * 
     * @param space - the psotion at which the king piece is created 
     */
-   public void kingPiece(int space) {
+   public void setPieceState(int space) {
    
 	   // create a new king piece
 	   // go to the space position in the array and place it there

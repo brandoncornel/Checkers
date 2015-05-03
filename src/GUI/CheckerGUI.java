@@ -16,6 +16,7 @@ package GUI;/*
  */
 
 import Model.Board;
+import Model.KingPiece;
 import System.Facade;
 
 import javax.swing.*;
@@ -372,7 +373,8 @@ public class CheckerGUI extends JFrame implements ActionListener{
                 if( board.colorAt( i ) == Color.blue ){
 
                     //if there is a  single piece there
-                    if((board.getPieceAt(i)).getType() == board.SINGLE){
+
+                    if((!isKing(board,i))){
 
                         //show a blue single piece in that spot board
                         temp = (JButton)possibleSquares.get(i);
@@ -386,7 +388,7 @@ public class CheckerGUI extends JFrame implements ActionListener{
                         }
 
                         //if there is a kinged piece there
-                    }else if((board.getPieceAt(i)).getType() == board.KING ){
+                    }else if((isKing(board,i) )){
 
                         //show a blue king piece in that spot board
                         temp= (JButton)possibleSquares.get(i);
@@ -403,7 +405,7 @@ public class CheckerGUI extends JFrame implements ActionListener{
                 }else if( board.colorAt( i ) == Color.white ){
 
                     //if there is a single piece there
-                    if((board.getPieceAt(i)).getType() == board.SINGLE){
+                    if((!isKing(board,i))){
 
                         //show a blue single piece in that spot board
                         temp = (JButton)possibleSquares.get(i);
@@ -415,7 +417,7 @@ public class CheckerGUI extends JFrame implements ActionListener{
                         }catch( Exception e ){}
 
                         //if there is a kinged piece there
-                    }else if((board.getPieceAt(i)).getType() == board.KING ){
+                    }else if((isKing(board,i)) ){
 
                         //show a blue king piece in that spot board
                         temp = (JButton)possibleSquares.get(i);
@@ -532,5 +534,9 @@ public class CheckerGUI extends JFrame implements ActionListener{
         return retVal;
 
     }//checkEndConditions
+
+    private boolean isKing(Board board, int i){
+        return board.getPieceAt(i) instanceof KingPiece;
+    }
 
 }//checkerGUI.java

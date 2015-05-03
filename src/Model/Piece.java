@@ -22,9 +22,9 @@ package Model; /**
 import java.util.*;
 import java.awt.*;
 
-public abstract class Piece {
+public interface Piece {
 	
-   private Color color; // the color of the piece
+//   private Color color; // the color of the piece
 
       
    /**
@@ -32,27 +32,31 @@ public abstract class Piece {
     * 
     * @param c - the color for this piece
     */
-   public Piece( Color c ) {
+//   public Piece( Color c ) {
+//
+//	   // set the color
+//	   color = c;
+//   }
 
-	   // set the color
-	   color = c;
-   }
+
 
    /**
     * The method which is abstract
     * 
     * @return the type of the piece
     */
-   public abstract int getType();
+//   public abstract int getType();
+
    
    /**
     * This method returns the color of this piece
     * 
     * @return the color for this piece
     */
-   public Color getColor() {
-  
-	   return color;
-   }
+//   public Color getColor() {
+//
+//	   return color;
+//   }
 
+   public Color getColor();
 }// Model.Piece

@@ -20,11 +20,11 @@ import java.awt.*;
  * @author
  *
  */
-public class SinglePiece extends Piece {
-	
-	
-   private static int SINGLE = 0; // this is a single type
-   private int type; // the type of the piece
+public class SinglePiece implements Piece {
+
+    private Color color;
+//   private static int SINGLE = 0; // this is a single type
+//   private int type; // the type of the piece
    
    /**
     * This constructor creates a single piece checker object
@@ -34,9 +34,10 @@ public class SinglePiece extends Piece {
     * @param pm - the possible moves of this single piece
     */
    public SinglePiece( Color c  ) {
- 
-	    super( c );
-		type = SINGLE;
+
+       this.color = c;
+//	    super( c );
+//		type = SINGLE;
    }
    
    /**
@@ -44,9 +45,14 @@ public class SinglePiece extends Piece {
     * 
     * @return type which is 0 for single
     */
-   public int getType() {
- 
-	   return type;
-   }
-   
+//   public int getType() {
+//
+//	   return type;
+//   }
+
+    @Override
+    public Color getColor() {
+        return color;
+    }
+
 }// Model.SinglePiece
