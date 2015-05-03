@@ -128,9 +128,6 @@ public class Firstscreen extends JFrame {
 				throw e2;
 			}
 			
-			theFacade.createPlayer( 1, gameType );
-			theFacade.createPlayer( 2, gameType );
-			
 			
 			if (IPField.isEnabled()) {
 				//set the host

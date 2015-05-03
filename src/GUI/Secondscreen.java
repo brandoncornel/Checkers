@@ -43,9 +43,13 @@ public class Secondscreen extends JFrame {
         super( "Second Screen" );
         theFacade = f;
         theFirst = first;
+		
+        theFacade.createPlayer( 1, type );
+        theFacade.createPlayer( 2, type );
         
         initComponents(type);
         pack();
+        
     }
 
 
