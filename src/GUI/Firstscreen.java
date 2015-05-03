@@ -13,8 +13,8 @@ import System.Facade;
  */
 
 public class Firstscreen extends JFrame {
+	private static final long serialVersionUID = -600713507125471750L;
 
-    private final Facade theFacade;
   
     // Variables declaration - do not modify
     private GameTypeSelectionPanel gameTypeSelection;
@@ -29,10 +29,9 @@ public class Firstscreen extends JFrame {
      *     
      */
 
-    public Firstscreen( Facade facade ) {
+    public Firstscreen() {
 
         super( "First screen" );
-        theFacade = facade;
         initComponents();
         pack();
     }
@@ -119,24 +118,11 @@ public class Firstscreen extends JFrame {
 			final int gameType = gameTypeSelection.getGameMode();
 			
 			
-			try {
-				// this method doesn't throw a type of exception, it throws Exception itself
-				theFacade.setGameMode( gameType );
-			} catch (Exception e1) {
-				AssertionError e2 = new AssertionError("gameType does not throw if parameter is one of CLIENTGAME, HOSTGAME or LOCALGAME. Was: " + gameType);
-				e2.initCause(e1);
-				throw e2;
-			}
-			
-			
-			if (IPField.isEnabled()) {
-				//set the host
-				theFacade.setHost( (URL) IPField.getValue() );
-			}
+			final URL ipAddr = (IPField.isEnabled() ? (URL) IPField.getValue() : null);
 			
 			//hide the GUI.Firstscreen, make a GUI.Secondscreen and show it
 			Firstscreen.this.setVisible(false);
-			new Secondscreen( theFacade, Firstscreen.this, gameType ).setVisible(true);
+			new Secondscreen( Firstscreen.this, gameType, ipAddr ).setVisible(true);
 			
 		}//end of actionPerformed
 	}
@@ -158,6 +144,8 @@ public class Firstscreen extends JFrame {
 	 * A format that creates http URLs from a hostname.
 	 */
 	private class UrlFormat extends java.text.Format {
+		private static final long serialVersionUID = 2014517376614772066L;
+
 		public StringBuffer format(Object obj, StringBuffer toAppendTo, java.text.FieldPosition pos) {
 			URL obj2 = (URL) obj;
 			toAppendTo.append(obj2.getHost());

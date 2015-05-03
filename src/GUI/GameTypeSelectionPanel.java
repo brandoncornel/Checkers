@@ -19,7 +19,9 @@ import static System.Facade.HOSTGAME;
  * using  GameTypeSelectionPanel.GAME_MODE_PROERTY_NAME as the property name
  */
 public final class GameTypeSelectionPanel extends JPanel {
+	private static final long serialVersionUID = -5161913739083260470L;
 	public static final String GAME_MODE_PROERTY_NAME = "GUI.GameTypeSelectionPanel.game_mode";
+	
 	private int gameMode = LOCALGAME;
 	
 	public GameTypeSelectionPanel() {

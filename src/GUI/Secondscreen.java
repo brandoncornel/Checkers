@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.event.*;
 import javax.swing.text.Document;
+import System.Driver;
 import System.Facade;
 
 
@@ -17,6 +18,7 @@ import System.Facade;
  * 
  */
 public class Secondscreen extends JFrame {
+    private static final long serialVersionUID = 8174574632891446878L;
     
     private final Facade theFacade;
     private final Firstscreen theFirst;
@@ -38,16 +40,29 @@ public class Secondscreen extends JFrame {
      * 
      */
     
-    public Secondscreen( Facade f, Firstscreen first, int type ) {
+    public Secondscreen( Firstscreen first, int gameType, java.net.URL ipAddr ) {
 
         super( "Second Screen" );
-        theFacade = f;
+        theFacade = new Driver().getFacade();
         theFirst = first;
-		
-        theFacade.createPlayer( 1, type );
-        theFacade.createPlayer( 2, type );
         
-        initComponents(type);
+        try {
+			// this method doesn't throw a type of exception, it throws Exception itself
+			theFacade.setGameMode( gameType );
+		} catch (Exception e1) {
+			AssertionError e2 = new AssertionError("gameType does not throw if parameter is one of CLIENTGAME, HOSTGAME or LOCALGAME. Was: " + gameType);
+			e2.initCause(e1);
+			throw e2;
+		}
+		
+        theFacade.createPlayer( 1, gameType );
+        theFacade.createPlayer( 2, gameType );
+        
+        if (ipAddr != null) {
+            theFacade.setHost( ipAddr );
+        }
+        
+        initComponents(gameType);
         pack();
         
     }

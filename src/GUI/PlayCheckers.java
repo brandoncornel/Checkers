@@ -11,21 +11,15 @@ import System.Driver;
  */
 class PlayCheckers{
 	
-	/*
-	* The main method to play checkers
-	*
-	*@param args[] the command line arguments
-	* 
-	*/
-	
-    public static void main(String args[] ){
-	
-	
-	Driver theDriver = new Driver();
-	
-	Firstscreen first = new Firstscreen( theDriver.getFacade() );
-	first.setVisible(true);
-	
-    }
-    
+	/**
+	 * The main method to play checkers
+	 *
+	 * @param args[] the command line arguments
+	 * 
+	 */
+	public static void main(String args[] ){
+		
+		Firstscreen first = new Firstscreen();
+		first.setVisible(true);
+	}
 }//GUI.PlayCheckers
