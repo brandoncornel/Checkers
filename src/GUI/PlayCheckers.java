@@ -1,25 +1,5 @@
-package GUI;/*
+package GUI;
 
-
- * GUI.PlayCheckers.java
-
- *
-
- * 
-
- * Version:
-
- *   $Id: GUI.PlayCheckers.java,v 1.1 2002/10/22 21:12:53 se362 Exp $
-
- *
-
- * Revisions:
-
- *   $Log: GUI.PlayCheckers.java,v $
- *   Revision 1.1  2002/10/22 21:12:53  se362
- *   Initial creation of case study
- *
- */
 import System.Driver;
 
 /**
@@ -44,7 +24,7 @@ class PlayCheckers{
 	Driver theDriver = new Driver();
 	
 	Firstscreen first = new Firstscreen( theDriver.getFacade() );
-	first.show();
+	first.setVisible(true);
 	
     }
     
