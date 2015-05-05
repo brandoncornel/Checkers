@@ -75,10 +75,8 @@ public class Secondscreen {
     private void initComponents(int gameType) {
 
         timedGameBox = new JCheckBox();
-        final JLabel playerOneLabel = new JLabel();
-        final JLabel playerTwoLabel = new JLabel();
-        final JTextField playerOneField = new JTextField();
-        final JTextField playerTwoField = new JTextField();
+        final SetNamePanel playerOneField = new SetNamePanel(1);
+        final SetNamePanel playerTwoField = new SetNamePanel(2);
         final JButton okButton = new JButton();
         final JButton cancelButton = new JButton();
         timerData = new TimerDataPanel();
@@ -91,12 +89,8 @@ public class Secondscreen {
         timedGameBox.setSelected( true );
         timedGameBox.addActionListener(new EnableTimerSettingsActionListener());
         
-        playerOneLabel.setText("Model.Player 1:");
-        playerTwoLabel.setText("Model.Player 2:");
-		playerOneField.getDocument().addDocumentListener(new SetPlayerNameDocumentListener(1));
-		playerTwoField.getDocument().addDocumentListener(new SetPlayerNameDocumentListener(2));
-        playerOneField.setText("Enter name");
-        playerTwoField.setText("Enter name");
+		playerOneField.addDocumentListener(new SetPlayerNameDocumentListener(1));
+		playerTwoField.addDocumentListener(new SetPlayerNameDocumentListener(2));
         
         okButton.setText("OK");
         okButton.setBackground(new Color (212, 208, 200));
@@ -112,13 +106,11 @@ public class Secondscreen {
 			final boolean firstPlayerIsLocal = (gameType != Facade.HOSTGAME);
 			final boolean secondPlayerIsLocal = (gameType != Facade.CLIENTGAME);
 			
-			playerTwoLabel.setEnabled( firstPlayerIsLocal );
 			playerTwoField.setEnabled( firstPlayerIsLocal );
 			if (!firstPlayerIsLocal) {
 				theFacade.setPlayerName(2, "player2");
 			}
 			
-			playerOneLabel.setEnabled( secondPlayerIsLocal );
 			playerOneField.setEnabled( secondPlayerIsLocal );
 			if (!secondPlayerIsLocal) {
 				theFacade.setPlayerName(1, "player1");
@@ -131,10 +123,6 @@ public class Secondscreen {
 		{
 			final GridBagConstraints remainderConstraints = new GridBagConstraints();
 			remainderConstraints.gridwidth = GridBagConstraints.REMAINDER;
-			
-			final GridBagConstraints nameLabelConstraints = new GridBagConstraints();
-			nameLabelConstraints.insets = new Insets(5, 0, 0, 0);
-			nameLabelConstraints.anchor = GridBagConstraints.WEST;
 			
 			final GridBagConstraints nameBoxConstraints = new GridBagConstraints();
 			nameBoxConstraints.insets = new Insets(5, 0, 0, 0);
@@ -157,9 +145,7 @@ public class Secondscreen {
 			cancelButtonConstraints.anchor = java.awt.GridBagConstraints.WEST;
 			cancelButtonConstraints.gridwidth = GridBagConstraints.REMAINDER;
 			
-			frame.getContentPane().add(playerOneLabel, nameLabelConstraints);
 			frame.getContentPane().add(playerOneField, nameBoxConstraints);
-			frame.getContentPane().add(playerTwoLabel, nameLabelConstraints);
 			frame.getContentPane().add(playerTwoField, nameBoxConstraints);
 			frame.getContentPane().add(timedGameBox, timedGameBoxConstraints);
 			frame.getContentPane().add(timerData, remainderConstraints);
