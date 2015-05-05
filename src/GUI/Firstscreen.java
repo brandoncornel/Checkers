@@ -12,28 +12,26 @@ import System.Facade;
  * @version 
  */
 
-public class Firstscreen extends JFrame {
-	private static final long serialVersionUID = -600713507125471750L;
-
-  
+public class Firstscreen {
+	
     // Variables declaration - do not modify
-    private GameTypeSelectionPanel gameTypeSelection;
-    private JFormattedTextField IPField;
+    private final GameTypeSelectionPanel gameTypeSelection;
+    private final JFormattedTextField IPField;
+    private final JFrame frame;
     // End of variables declaration
 
 
     /** 
      * Creates new form GUI.Firstscreen
      *
-     * @param facade a facade object for the GUI to interact with
-     *     
      */
 
     public Firstscreen() {
-
-        super( "First screen" );
+        gameTypeSelection = new GameTypeSelectionPanel();
+        IPField = new JFormattedTextField(new UrlFormat());
+        frame = new JFrame("First screen");
+        
         initComponents();
-        pack();
     }
     
 
@@ -45,12 +43,10 @@ public class Firstscreen extends JFrame {
 
     private void initComponents() {
 
-        gameTypeSelection = new GameTypeSelectionPanel();
-        IPField = new JFormattedTextField(new UrlFormat());
         final JButton OKButton = new JButton();
         final JButton CancelButton = new JButton();
-        getContentPane().setLayout(new java.awt.GridBagLayout());
-        addWindowListener(new ExitProgramListener());
+        frame.getContentPane().setLayout(new java.awt.GridBagLayout());
+        frame.addWindowListener(new ExitProgramListener());
         
 		
         gameTypeSelection.addPropertyChangeListener(GameTypeSelectionPanel.GAME_MODE_PROERTY_NAME, new IPFieldSetEnabled());
@@ -93,21 +89,25 @@ public class Firstscreen extends JFrame {
 			weightOne.weightx = 1;
 			
 			
-			getContentPane().add(gameTypeSelection, radioButtons);
-			getContentPane().add(new JLabel("IP address:"), normal);
-			getContentPane().add(IPField, IPFieldConstraints);
-			getContentPane().add(new JLabel("Ex: 123.456.789.123"), IPExampleConstraints);
+			frame.getContentPane().add(gameTypeSelection, radioButtons);
+			frame.getContentPane().add(new JLabel("IP address:"), normal);
+			frame.getContentPane().add(IPField, IPFieldConstraints);
+			frame.getContentPane().add(new JLabel("Ex: 123.456.789.123"), IPExampleConstraints);
 			
+			frame.getContentPane().add(new JPanel(), normal);
+			frame.getContentPane().add(new JPanel(), weightOne);
+			frame.getContentPane().add(OKButton, confirmButtons);
+			frame.getContentPane().add(CancelButton, confirmButtons);
 			
-			getContentPane().add(new JPanel(), normal);
-			getContentPane().add(new JPanel(), weightOne);
-			getContentPane().add(OKButton, confirmButtons);
-			getContentPane().add(CancelButton, confirmButtons);
+			frame.pack();
 		}
 	}
 	
+	public void setVisible(boolean newValue) {frame.setVisible(newValue);}
+	public void dispose() {frame.dispose();}
+	
 	/**
-	 * Upon a call to actionPerformed, checks compoennt properties,
+	 * Upon a call to actionPerformed, checks component properties,
 	 * sets the Facade's properties appropriately,
 	 * then opens the SecondScreen
 	 */

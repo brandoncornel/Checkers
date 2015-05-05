@@ -1,7 +1,5 @@
 package GUI;
 
-import System.Driver;
-
 /**
  *
  * The main class to run the game. It creates the driver and first screen

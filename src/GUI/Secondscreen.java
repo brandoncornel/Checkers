@@ -17,8 +17,7 @@ import System.Facade;
  * @author
  * 
  */
-public class Secondscreen extends JFrame {
-    private static final long serialVersionUID = 8174574632891446878L;
+public class Secondscreen {
     
     private final Facade theFacade;
     private final Firstscreen theFirst;
@@ -27,6 +26,7 @@ public class Secondscreen extends JFrame {
     private JCheckBox timedGameBox;
     private JSlider turnLengthField;
     private JSlider warningLengthField;
+    private final JFrame frame;
     // End of variables declaration
 	
 	
@@ -34,15 +34,12 @@ public class Secondscreen extends JFrame {
      * 
      * Creates new GUI.Secondscreen
      *
-     *@param f the facade getting passed to to set options
-     *@param first the GUI.Firstscreen object that ceated this window
-     *@param type the type of game 
-     * 
+     * @param first the GUI.Firstscreen object that created this window
+     * @param gameType the type of game 
+     * @param ipAddr the address of the other player, if there is one.
      */
     
     public Secondscreen( Firstscreen first, int gameType, java.net.URL ipAddr ) {
-
-        super( "Second Screen" );
         theFacade = new Driver().getFacade();
         theFirst = first;
         
@@ -54,6 +51,7 @@ public class Secondscreen extends JFrame {
 			e2.initCause(e1);
 			throw e2;
 		}
+        
 		
         theFacade.createPlayer( 1, gameType );
         theFacade.createPlayer( 2, gameType );
@@ -62,8 +60,10 @@ public class Secondscreen extends JFrame {
             theFacade.setHost( ipAddr );
         }
         
+        this.frame = new JFrame("Second Screen");
+        
         initComponents(gameType);
-        pack();
+        frame.pack();
         
     }
 
@@ -86,8 +86,8 @@ public class Secondscreen extends JFrame {
         final JButton cancelButton = new JButton();
         turnLengthField = new JSlider( 10, 300, 120 );
         warningLengthField = new JSlider( 10, 300, 120 );
-        getContentPane().setLayout(new GridBagLayout());
-        addWindowListener(new ExitProgramListener());
+        frame.getContentPane().setLayout(new GridBagLayout());
+        frame.addWindowListener(new ExitProgramListener());
         
         
         timedGameBox.setBackground(new Color (204, 204, 204));
@@ -175,19 +175,23 @@ public class Secondscreen extends JFrame {
 			cancelButtonConstraints.anchor = java.awt.GridBagConstraints.WEST;
 			cancelButtonConstraints.gridwidth = GridBagConstraints.REMAINDER;
 			
-			getContentPane().add(playerOneLabel, nameLabelConstraints);
-			getContentPane().add(playerOneField, nameBoxConstraints);
-			getContentPane().add(playerTwoLabel, nameLabelConstraints);
-			getContentPane().add(playerTwoField, nameBoxConstraints);
-			getContentPane().add(timedGameBox, timedGameBoxConstraints);
-			getContentPane().add(turnLengthLabel, sliderLabelConstraints);
-			getContentPane().add(turnLengthField, sliderValueConstraints);
-			getContentPane().add(WarningLengthLabel, sliderLabelConstraints);
-			getContentPane().add(warningLengthField, sliderValueConstraints);
-			getContentPane().add(okButton, okButtonConstraints);
-			getContentPane().add(cancelButton, cancelButtonConstraints);
+			frame.getContentPane().add(playerOneLabel, nameLabelConstraints);
+			frame.getContentPane().add(playerOneField, nameBoxConstraints);
+			frame.getContentPane().add(playerTwoLabel, nameLabelConstraints);
+			frame.getContentPane().add(playerTwoField, nameBoxConstraints);
+			frame.getContentPane().add(timedGameBox, timedGameBoxConstraints);
+			frame.getContentPane().add(turnLengthLabel, sliderLabelConstraints);
+			frame.getContentPane().add(turnLengthField, sliderValueConstraints);
+			frame.getContentPane().add(WarningLengthLabel, sliderLabelConstraints);
+			frame.getContentPane().add(warningLengthField, sliderValueConstraints);
+			frame.getContentPane().add(okButton, okButtonConstraints);
+			frame.getContentPane().add(cancelButton, cancelButtonConstraints);
 		}
 	}
+    
+    
+    public void setVisible(boolean newValue) {frame.setVisible(newValue);}
+    public void dispose() {frame.dispose();}
 	
 	
 	/**
