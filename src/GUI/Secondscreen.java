@@ -109,11 +109,15 @@ public class Secondscreen {
 			playerTwoField.setEnabled( firstPlayerIsLocal );
 			if (!firstPlayerIsLocal) {
 				theFacade.setPlayerName(2, "player2");
+			} else {
+				theFacade.setPlayerName(2, "Enter name");
 			}
 			
 			playerOneField.setEnabled( secondPlayerIsLocal );
 			if (!secondPlayerIsLocal) {
 				theFacade.setPlayerName(1, "player1");
+			} else {
+				theFacade.setPlayerName(1, "Enter name");
 			}
 			
 			timedGameBox.setEnabled( secondPlayerIsLocal);
