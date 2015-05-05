@@ -182,24 +182,7 @@ public class Secondscreen {
 	
 	private final class ContinueToCheckerGuiActionListener implements ActionListener {
 		public void actionPerformed( ActionEvent e ){
-			try {
-				//if a timer is desired
-				if ( timedGameBox.isEnabled() && timedGameBox.isSelected() ){
-					//set the 2 timer values
-					theFacade.setTimer( timerData.getTurnLength(),
-								timerData.getWarningLength() );
-				} else {
-					//else set timer values to a no timer constant
-					theFacade.setTimer( -1, -1 );
-				}
-				
-			} catch ( Exception x ) {
-					
-					JOptionPane.showMessageDialog( null,
-								"Invalid System.Timer value(s)",
-								"Error",
-								JOptionPane.INFORMATION_MESSAGE );
-			}
+			timerData.applyToFacade(theFacade);
 			
 			//start the game
 			theFacade.startGame();

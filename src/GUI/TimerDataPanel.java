@@ -9,6 +9,8 @@ import System.Facade;
  * Allows a user to modify timer settings
  */
 public class TimerDataPanel extends JPanel {
+	private static final long serialVersionUID = -1955723149161984574L;
+	
 	private final BoundedRangeModel turnLengthRangeModel;
 	private final BoundedRangeModel warnLengthRangeModel;
 	
