@@ -14,11 +14,10 @@ package System; /**
 import Model.Board;
 import Model.Player;
 import Model.Rules;
-import System.Timer;
 
-import java.awt.*;
-import java.net.*;
 import javax.swing.*;
+import java.awt.*;
+import java.net.URL;
 
 
 /**
@@ -269,32 +268,7 @@ public class Driver {
 	playerTwo.endOfGame( player.getName() + " quit the game" );
     }
     
-    /**
-     * This method creates the timer to be used, if one is desired 
-     * to be used. It will also set the number of seconds for each 
-     * turn.
-     *
-     * @param   time    : the number of seconds for each turn
-     * @param   warning : whether or not a player will be warned 
-     *                    that their turn is going to end
-     *
-     * @pre  It has been selected to use a timer in the game setup
-     * @post The timer has been created and the appropriate time 
-     *       restraints are in place
-     */
-    public void setTimer( int time, int warning ){
-   	// If values are negative, set runningTimer to false
-	// If they are positive values, create the System.Timer and
-	// notifier with the times
 
-	if ( time < 0 ) {
-	    runningTimer = false;
-	} else {
-	    runningTimer = true;
-	    theTimer = new Timer();
-	}
-        
-    }
         
     /**
      * This method sets the colors of pieces that each player 

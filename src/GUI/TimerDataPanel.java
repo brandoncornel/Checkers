@@ -1,9 +1,9 @@
 package GUI;
 
-import java.awt.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import System.Facade;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.*;
 
 /**
  * Allows a user to modify timer settings
@@ -51,20 +51,7 @@ public class TimerDataPanel extends JPanel {
 	public int getWarningLength() {
 		return (this.isEnabled() ? warnLengthRangeModel.getValue() : -1);
 	}
-	
-	public void applyToFacade(Facade f) {
-		try {
-			f.setTimer(
-				this.getTurnLength(), 
-				this.getWarningLength()
-			);
-		} catch (Exception x) {
-			JOptionPane.showMessageDialog( null,
-					"Invalid System.Timer value(s)",
-					"Error",
-					JOptionPane.INFORMATION_MESSAGE );
-		}
-	}
+
 	
 	/**
 	 * Upon a stateChanged, changes toUpdate's text to indicate a JSlider's value

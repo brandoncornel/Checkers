@@ -172,7 +172,6 @@ public class Secondscreen {
 	
 	private final class ContinueToCheckerGuiActionListener implements ActionListener {
 		public void actionPerformed( ActionEvent e ){
-			timerData.applyToFacade(theFacade);
 			
 			//start the game
 			theFacade.startGame();
