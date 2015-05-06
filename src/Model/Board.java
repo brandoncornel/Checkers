@@ -12,7 +12,8 @@ package Model; /**
  */
 import java.util.*;
 import java.awt.*;
-
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  *  This class represents the board on which checkers is being played.
@@ -22,7 +23,10 @@ import java.awt.*;
  *
  *  @author
  */
-public class Board {
+public class Board{
+
+    private List<Observer> observers = new ArrayList<Observer>();
+    private int state;
 
    private Piece pieces[]; // the pieces that are on the board
 //   public static int SINGLE = 0;
@@ -59,7 +63,20 @@ public class Board {
 
    }
 
-   
+    public void setState(int state){
+        this.state = state;
+        notifyAllObservers();
+    }
+
+   public void attatch(Observer observer) {
+       observers.add(observer);
+   }
+
+    public void notifyAllObservers(){
+        for(Observer observer : observers){
+            observer.update();
+        }
+    }
 
    /**
     * Model.Move the piece at the start position to the end position
