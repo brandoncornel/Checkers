@@ -44,12 +44,12 @@ public class CheckerGUI extends JFrame implements ActionListener{
 
     private List<JButton> possibleSquares = new ArrayList<JButton>();//a vector of the squares
     private int timeRemaining;//the time remaining
+    private List<JButton> validMoves = new ArrayList<JButton>();
 
 
     private JLabel PlayerOnelabel;
     private JLabel playerTwoLabel;
     private JLabel timeRemainingLabel;
-    private JLabel secondsLeftLabel;
     private JButton ResignButton;
     private JButton DrawButton;
     private JLabel warningLabel, whosTurnLabel;
@@ -149,6 +149,7 @@ public class CheckerGUI extends JFrame implements ActionListener{
                     button.setBackground(Color.white);
                 } else {
                     button.setBackground(new Color(204, 204, 153));
+                    validMoves.add(button);
                 }
             }
             else{
@@ -156,6 +157,7 @@ public class CheckerGUI extends JFrame implements ActionListener{
                     button.setBackground(Color.white);
                 } else {
                     button.setBackground(new Color(204, 204, 153));
+                    validMoves.add(button);
                 }
             }
             gridBagConstraints1 = new java.awt.GridBagConstraints();
@@ -178,7 +180,6 @@ public class CheckerGUI extends JFrame implements ActionListener{
 
         warningLabel = new JLabel( );
         timeRemainingLabel = new JLabel();
-        secondsLeftLabel = new JLabel();
 
         ResignButton = new JButton();
         ResignButton.addActionListener( this );
@@ -220,36 +221,21 @@ public class CheckerGUI extends JFrame implements ActionListener{
         gridBagConstraints1.gridy = 2;
         getContentPane().add( warningLabel, gridBagConstraints1 );
 
-        timeRemainingLabel.setText("Time Remaining:");
-        timeRemainingLabel.setForeground( Color.black );
-
-        gridBagConstraints1 = new java.awt.GridBagConstraints();
-        gridBagConstraints1.gridx = 8;
-        gridBagConstraints1.gridy = 3;
+        timeRemainingLabel.setText("Play Checkers");
         getContentPane().add(timeRemainingLabel, gridBagConstraints1);
-
-        secondsLeftLabel.setText( timeLeft + " sec.");
-        secondsLeftLabel.setForeground( Color.black );
-
-        gridBagConstraints1 = new java.awt.GridBagConstraints();
-        gridBagConstraints1.gridx = 8;
-        gridBagConstraints1.gridy = 4;
-        getContentPane().add(secondsLeftLabel, gridBagConstraints1);
 
         ResignButton.setActionCommand("resign");
         ResignButton.setText("Resign");
 
-        gridBagConstraints1 = new java.awt.GridBagConstraints();
         gridBagConstraints1.gridx = 8;
-        gridBagConstraints1.gridy = 7;
+        gridBagConstraints1.gridy = 3;
         getContentPane().add(ResignButton, gridBagConstraints1);
 
         DrawButton.setActionCommand("draw");
         DrawButton.setText("Draw");
 
-        gridBagConstraints1 = new java.awt.GridBagConstraints();
         gridBagConstraints1.gridx = 8;
-        gridBagConstraints1.gridy = 6;
+        gridBagConstraints1.gridy = 4;
         getContentPane().add(DrawButton, gridBagConstraints1);
 
     }
@@ -449,40 +435,8 @@ public class CheckerGUI extends JFrame implements ActionListener{
         }
     }
 
-    /**
-     *
-     * Update the timer
-     *
-     */
 
-    public void updateTime() {
 
-        if ( theFacade.getTimer() > 0 ) {
-
-            // if the time has run out but not in warning time yet
-            // display warning and count warning time
-            if ( timeRemaining <= 0 && ( warningLabel.getText() ).equals( "" ) ) {
-                timeRemaining = theFacade.getTimerWarning();
-                warningLabel.setText( "Time is running out!!!" );
-
-                // if the time has run out and it was in warning time quit game
-            } else if ( timeRemaining <= 0 &&
-                    !( warningLabel.getText() ).equals( "" ) ) {
-
-                theFacade.pressQuit();
-
-            } else {
-
-                timeRemaining--;
-
-            }
-
-            secondsLeftLabel.setText( timeRemaining + " sec." );
-
-        } else {
-            secondsLeftLabel.setText( "*****" );
-        }
-    }
 
     /**
      * Checks the ending condotions for the game
