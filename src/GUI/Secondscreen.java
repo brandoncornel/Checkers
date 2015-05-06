@@ -22,8 +22,6 @@ public class Secondscreen {
     private final Facade theFacade;
     
     // Variables declaration
-    private JCheckBox timedGameBox;
-    private TimerDataPanel timerData;
     private final JFrame frame;
     // End of variables declaration
 	
@@ -70,20 +68,13 @@ public class Secondscreen {
 	
     private void initComponents(int gameType) {
 
-        timedGameBox = new JCheckBox();
         final SetNamePanel playerOneField = new SetNamePanel(1);
         final SetNamePanel playerTwoField = new SetNamePanel(2);
         final JButton okButton = new JButton();
         final JButton cancelButton = new JButton();
-        timerData = new TimerDataPanel();
         frame.getContentPane().setLayout(new GridBagLayout());
         frame.addWindowListener(new ExitProgramListener());
         
-        
-        timedGameBox.setBackground(new Color (204, 204, 204));
-        timedGameBox.setText("Timed game");
-        timedGameBox.setSelected( true );
-        timedGameBox.addActionListener(new EnableTimerSettingsActionListener());
         
 		playerOneField.addDocumentListener(new SetPlayerNameDocumentListener(1));
 		playerTwoField.addDocumentListener(new SetPlayerNameDocumentListener(2));
@@ -115,26 +106,13 @@ public class Secondscreen {
 			} else {
 				theFacade.setPlayerName(1, "Enter name");
 			}
-			
-			timedGameBox.setEnabled( secondPlayerIsLocal);
-			timerData.setEnabled(secondPlayerIsLocal);
 		}
 		
 		{
-			final GridBagConstraints remainderConstraints = new GridBagConstraints();
-			remainderConstraints.gridwidth = GridBagConstraints.REMAINDER;
-			
 			final GridBagConstraints nameBoxConstraints = new GridBagConstraints();
 			nameBoxConstraints.insets = new Insets(5, 0, 0, 0);
 			nameBoxConstraints.anchor = GridBagConstraints.WEST;
 			nameBoxConstraints.gridwidth = GridBagConstraints.REMAINDER;
-			
-			final GridBagConstraints timedGameBoxConstraints = new GridBagConstraints();
-			timedGameBoxConstraints.insets = new Insets(31, 0, 1, 0);
-			timedGameBoxConstraints.anchor = GridBagConstraints.WEST;
-			timedGameBoxConstraints.gridwidth = GridBagConstraints.REMAINDER;
-			timedGameBoxConstraints.ipadx = 7;
-			timedGameBoxConstraints.ipady = 7;
 			
 			final GridBagConstraints okButtonConstraints = new GridBagConstraints();
 			okButtonConstraints.insets = new Insets(20, 0, 10, 12);
@@ -147,8 +125,6 @@ public class Secondscreen {
 			
 			frame.getContentPane().add(playerOneField, nameBoxConstraints);
 			frame.getContentPane().add(playerTwoField, nameBoxConstraints);
-			frame.getContentPane().add(timedGameBox, timedGameBoxConstraints);
-			frame.getContentPane().add(timerData, remainderConstraints);
 			frame.getContentPane().add(okButton, okButtonConstraints);
 			frame.getContentPane().add(cancelButton, cancelButtonConstraints);
 		}
@@ -185,19 +161,6 @@ public class Secondscreen {
 	private final class ReturnToFirstScreenActionListener implements ActionListener {
 		public void actionPerformed( ActionEvent e ){
 			Secondscreen.this.dispose();
-
-		}
-	}
-	
-	/**
-	 * Upon a call to actionPerformed, enabled to disabled turnLengthField and warningLengthField,
-	 * making it's enabledness match the source's selected value.
-	 */
-	private final class EnableTimerSettingsActionListener implements ActionListener {
-		public void actionPerformed( ActionEvent e ){
-			AbstractButton src = (AbstractButton) e.getSource();
-			
-			timerData.setEnabled( src.isSelected() );
 		}
 	}
 	
