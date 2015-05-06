@@ -38,7 +38,11 @@ import java.util.List;
 
 public class CheckerGUI extends JFrame implements ActionListener{
 
-    //the facade for the game
+    private String blueSingle = "file:BlueSingle.gif";
+    private String whiteSingle = "file:WhiteSingle.gif";
+    private String blueKing = "file:BlueKing.gif";
+    private String whiteKing = "file:WhiteKing.gif";
+
 
     private static Facade theFacade; //the facade
 
@@ -291,7 +295,7 @@ public class CheckerGUI extends JFrame implements ActionListener{
 
                 //call selectSpace with the button pressed
                 theFacade.selectSpace(
-                        Integer.parseInt( e.getActionCommand() ) );
+                        Integer.parseInt(e.getActionCommand()));
 
                 //if draw is pressed
             }else if( e.getActionCommand().equals( "draw" ) ){
@@ -335,86 +339,36 @@ public class CheckerGUI extends JFrame implements ActionListener{
     }
 
 
-
+    private void placePic(JButton temp, int i, String pic){
+        temp = (JButton)possibleSquares.get(i);
+        try{
+            temp.setIcon(
+                    new ImageIcon( new URL(pic) ));
+        }catch( MalformedURLException e ){
+            System.out.println(e.getMessage());
+        }
+    }
 
     private void update(){
-
-
         if( checkEndConditions() ){
-
             theFacade.showEndGame(" ");
         }
-        //the board to read information from
         Board board = theFacade.stateOfBoard();
-        //a temp button to work with
         JButton temp =  new JButton();
-
-        //go through the board
         for( int i = 1; i < board.sizeOf(); i++ ){
-
-            // if there is a piece there
             if( board.occupied( i ) ){
-
-                //check to see if color is blue
                 if( board.colorAt( i ) == Color.blue ){
-
-                    //if there is a  single piece there
-
                     if((!isKing(board,i))){
-
-                        //show a blue single piece in that spot board
-                        temp = (JButton)possibleSquares.get(i);
-
-                        //get the picture from the web
-                        try{
-                            temp.setIcon(
-                                    new ImageIcon( new URL("file:BlueSingle.gif") ));
-                        }catch( MalformedURLException e ){
-                            System.out.println(e.getMessage());
-                        }
-
-                        //if there is a kinged piece there
-                    }else if((isKing(board,i) )){
-
-                        //show a blue king piece in that spot board
-                        temp= (JButton)possibleSquares.get(i);
-
-                        //get the picture formt the web
-                        try{
-                            temp.setIcon(
-                                    new ImageIcon(new URL("file:BlueKing.gif") ) );
-                        }catch( Exception e ){}
-
+                        placePic(temp, i, blueSingle);
+                    }else if((isKing(board,i) )) {
+                        placePic(temp, i, blueKing);
                     }
-
-                    //check to see if the color is white
                 }else if( board.colorAt( i ) == Color.white ){
-
-                    //if there is a single piece there
                     if((!isKing(board,i))){
-
-                        //show a blue single piece in that spot board
-                        temp = (JButton)possibleSquares.get(i);
-
-                        //get the picture from the web
-                        try{
-                            temp.setIcon(
-                                    new ImageIcon(new URL("file:WhiteSingle.gif")));
-                        }catch( Exception e ){}
-
-                        //if there is a kinged piece there
+                        placePic(temp, i, whiteSingle);
                     }else if((isKing(board,i)) ){
-
-                        //show a blue king piece in that spot board
-                        temp = (JButton)possibleSquares.get(i);
-
-                        //get the picture from the web
-                        try{
-                            temp.setIcon(
-                                    new ImageIcon(new URL("file:WhiteKing.gif") ) );
-                        }catch( Exception e ){}
+                        placePic(temp,i,whiteKing);
                     }
-                    //if there isnt a piece there
                 }
             }else {
                 //show no picture
