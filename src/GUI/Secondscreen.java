@@ -54,10 +54,7 @@ public class Secondscreen {
 		
         theFacade.createPlayer( 1, gameType );
         theFacade.createPlayer( 2, gameType );
-        
-        if (ipAddr != null) {
-            theFacade.setHost( ipAddr );
-        }
+
         
         this.frame = new JFrame("Second Screen");
         

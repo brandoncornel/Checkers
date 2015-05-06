@@ -39,8 +39,6 @@ public class Driver {
     private int     gameType;
     private Player  activePlayer;
     private Player  passivePlayer;
-    private boolean runningTimer;
-    private Timer   theTimer;
     private Facade  theFacade;
     private Rules   theRules;
     
@@ -350,18 +348,7 @@ public class Driver {
    	return passivePlayer;
     }
     
-    /**
-     * Whether the current game uses a timer
-     *
-     * @return true if a timer is being sed in the game, otherwise 
-     *         false
-     *
-     * @pre the game has started 
-     * @post this method has not altered anything
-     */
-    public boolean timerRunning(){
-   	return runningTimer;
-    }
+
     
    
     /**
@@ -389,24 +376,6 @@ public class Driver {
    	return gameType;
     }
     
-    /**
-     * Return the notifier of the System.Timer
-     *
-     * @return the notifier for the System.Timer
-     *
-     * @pre  The game is running
-     * @post This method has changed nothing
-     */
-    public Notifier getTimerNotifier(){
-   	// Return the timers notifier, by asking the timer 
-	// for its notifier
-	Notifier timer = null;
-	
-	if ( theTimer != null ) {
-	    timer = theTimer.getNotifier();
-	}
-	
-	return timer;
-    }
+
     
 }//System.Driver.java

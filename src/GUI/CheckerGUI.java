@@ -311,11 +311,7 @@ public class CheckerGUI extends JFrame implements ActionListener{
             }else if( e.getSource().equals( theFacade ) ) {
 
                 //if its a player switch event
-                if ( (e.getActionCommand()).equals(theFacade.playerSwitch) ) {
-                    //set a new time
-                    timeRemaining = theFacade.getTimer();
-                    //if it is an update event
-                } else if ( (e.getActionCommand()).equals(theFacade.update) ) {
+                if ( (e.getActionCommand()).equals(theFacade.update) ) {
                     //update the GUI
                     update();
                 } else {

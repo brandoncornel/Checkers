@@ -237,22 +237,6 @@ public class Facade extends Component {
 
     
     /**
-     * Tell the kernel to connect to the specified host to 
-     * start a network game.
-     *
-     * @param host
-     *
-     * @pre   host != null
-     */
-    public void setHost( URL host ){
-	// Makes sure host isnt null
-	// Calls setHost() in driver
-	if( host != null ){
-	    theDriver.setHost( host );
-	}
-    }
-    
-    /**
      * Display to local players that the game has ended with 
      * the message provided.
      * 
@@ -285,46 +269,8 @@ public class Facade extends Component {
 	    throw new Exception( "Invalid Game Mode" );
 	}
     }
-    
-    /**
-     * Returns the timer value, how long each player get to take a turn
-     * 
-     * @return the amount of time each player has for a turn 
-     * 
-     * @pre there has been a timer set for the current game
-     * 
-     */
-    public int getTimer(){
-	int retval = 0;
 
-	// Makes sure there is a timer for this game
-	if( timer != 999 ){
-	    retval = timer;
-	}
 
-	// Returns the timer value (clas variable: time )
-	return retval;
-    }
-    
-    /**
-     * Returns the amount of time chosen for a warning that a player is 
-     * near the end of his/her turn.
-     * 
-     * @return the amount of warning time a player has
-     * 
-     * @pre there has been a timer set for the current game  
-     */
-    public int getTimerWarning(){
-	int retval = -1;
-
-	// Makes sure there is a timer for this game
-	if( warningTime != 999 ){
-	    retval = warningTime;
-	}
-
-	// Returns the timer value (clas variable: warningTime )
-	return retval;
-    }
    
     /**
      * Adds an action listener to the facade
