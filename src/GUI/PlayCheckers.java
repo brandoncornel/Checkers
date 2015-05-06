@@ -17,7 +17,7 @@ class PlayCheckers{
 	 */
 	public static void main(String args[] ){
 		
-		Firstscreen first = new Firstscreen();
+		Secondscreen first = new Secondscreen();
 		first.setVisible(true);
 	}
 }//GUI.PlayCheckers

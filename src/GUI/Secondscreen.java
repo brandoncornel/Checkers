@@ -20,7 +20,6 @@ import System.Facade;
 public class Secondscreen {
     
     private final Facade theFacade;
-    private final Firstscreen theFirst;
     
     // Variables declaration
     private JCheckBox timedGameBox;
@@ -38,9 +37,9 @@ public class Secondscreen {
      * @param ipAddr the address of the other player, if there is one.
      */
     
-    public Secondscreen( Firstscreen first, int gameType, java.net.URL ipAddr ) {
+    public Secondscreen( ) {
         theFacade = new Driver().getFacade();
-        theFirst = first;
+        int gameType = 10000;
         
         try {
 			// this method doesn't throw a type of exception, it throws Exception itself
@@ -173,7 +172,6 @@ public class Secondscreen {
 			//start the game
 			theFacade.startGame();
 			//hide this screen, make and show the GUI
-			theFirst.dispose();
 			Secondscreen.this.dispose();
 			CheckerGUI GUI = new CheckerGUI( theFacade, theFacade.getPlayerName(1), theFacade.getPlayerName(2) );
 			GUI.setVisible(true);
@@ -187,7 +185,7 @@ public class Secondscreen {
 	private final class ReturnToFirstScreenActionListener implements ActionListener {
 		public void actionPerformed( ActionEvent e ){
 			Secondscreen.this.dispose();
-			theFirst.setVisible(true);
+
 		}
 	}
 	

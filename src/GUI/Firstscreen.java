@@ -1,10 +1,13 @@
 package GUI;
 
-import java.net.*;
-import javax.swing.*;
-import java.awt.event.*;
-import java.awt.*;
 import System.Facade;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  *
@@ -48,7 +51,7 @@ public class Firstscreen {
         frame.getContentPane().setLayout(new java.awt.GridBagLayout());
         frame.addWindowListener(new ExitProgramListener());
         
-		
+
         gameTypeSelection.addPropertyChangeListener(GameTypeSelectionPanel.GAME_MODE_PROERTY_NAME, new IPFieldSetEnabled());
         
         IPField.setText("IP address goes here");
@@ -122,24 +125,24 @@ public class Firstscreen {
 			
 			//hide the GUI.Firstscreen, make a GUI.Secondscreen and show it
 			Firstscreen.this.setVisible(false);
-			new Secondscreen( Firstscreen.this, gameType, ipAddr ).setVisible(true);
+			new Secondscreen( ).setVisible(true);
 			
 		}//end of actionPerformed
 	}
-	
+
 	/**
 	 * Upon a call to propertyChange, sets the enabled property depending
 	 * on the event's NewValue
 	 */
 	private class IPFieldSetEnabled implements java.beans.PropertyChangeListener {
-		
+
 		public void propertyChange(java.beans.PropertyChangeEvent e) {
 			if (GameTypeSelectionPanel.GAME_MODE_PROERTY_NAME.equals(e.getPropertyName())) {
 				IPField.setEnabled(e.getNewValue().equals(Facade.CLIENTGAME));
 			}
 		}
 	}
-	
+
 	/**
 	 * A format that creates http URLs from a hostname.
 	 */
@@ -151,7 +154,7 @@ public class Firstscreen {
 			toAppendTo.append(obj2.getHost());
 			return toAppendTo;
 		}
-		
+
 		public URL parseObject(String source, java.text.ParsePosition pos) {
 			try {
 				URL retVal = new URL("http", source.substring(pos.getIndex()), "/");
