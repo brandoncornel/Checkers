@@ -51,11 +51,13 @@ public class Secondscreen {
 		
         theFacade.createPlayer( 1, gameType );
         theFacade.createPlayer( 2, gameType );
+        theFacade.setPlayerName(1, "Enter name");
+        theFacade.setPlayerName(2, "Enter name");
 
         
         this.frame = new JFrame("Second Screen");
         
-        initComponents(gameType);
+        initComponents();
         frame.pack();
         
     }
@@ -66,7 +68,7 @@ public class Secondscreen {
      * initialize the form.
      */
 	
-    private void initComponents(int gameType) {
+    private void initComponents() {
 
         final SetNamePanel playerOneField = new SetNamePanel(1);
         final SetNamePanel playerTwoField = new SetNamePanel(2);
@@ -87,29 +89,11 @@ public class Secondscreen {
         cancelButton.setBackground(new Color (212, 208, 200));
         cancelButton.addActionListener( new ReturnToFirstScreenActionListener() );
         
-        //determine what components should be disabled
-		//depending on the game mode
-		{
-			final boolean firstPlayerIsLocal = (gameType != Facade.HOSTGAME);
-			final boolean secondPlayerIsLocal = (gameType != Facade.CLIENTGAME);
-			
-			playerTwoField.setEnabled( firstPlayerIsLocal );
-			if (!firstPlayerIsLocal) {
-				theFacade.setPlayerName(2, "player2");
-			} else {
-				theFacade.setPlayerName(2, "Enter name");
-			}
-			
-			playerOneField.setEnabled( secondPlayerIsLocal );
-			if (!secondPlayerIsLocal) {
-				theFacade.setPlayerName(1, "player1");
-			} else {
-				theFacade.setPlayerName(1, "Enter name");
-			}
-		}
 		
 		{
 			final GridBagConstraints nameBoxConstraints = new GridBagConstraints();
+			nameBoxConstraints.weightx = 1;
+			nameBoxConstraints.fill = GridBagConstraints.BOTH;
 			nameBoxConstraints.insets = new Insets(5, 0, 0, 0);
 			nameBoxConstraints.anchor = GridBagConstraints.WEST;
 			nameBoxConstraints.gridwidth = GridBagConstraints.REMAINDER;
@@ -123,8 +107,12 @@ public class Secondscreen {
 			cancelButtonConstraints.anchor = java.awt.GridBagConstraints.WEST;
 			cancelButtonConstraints.gridwidth = GridBagConstraints.REMAINDER;
 			
+			final GridBagConstraints weightOne = new GridBagConstraints();
+			weightOne.weightx = 1;
+			
 			frame.getContentPane().add(playerOneField, nameBoxConstraints);
 			frame.getContentPane().add(playerTwoField, nameBoxConstraints);
+			frame.getContentPane().add(new JLabel(), weightOne);
 			frame.getContentPane().add(okButton, okButtonConstraints);
 			frame.getContentPane().add(cancelButton, cancelButtonConstraints);
 		}
