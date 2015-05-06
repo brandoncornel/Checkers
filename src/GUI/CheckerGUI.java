@@ -349,6 +349,11 @@ public class CheckerGUI extends JFrame implements ActionListener{
         }
     }
 
+    public boolean occupAndBlue(Board board, int i){
+        return (board.occupied(i) && board.colorAt(i) == Color.blue);
+    }
+
+
     private void update(){
         if( checkEndConditions() ){
             theFacade.showEndGame(" ");
@@ -356,20 +361,19 @@ public class CheckerGUI extends JFrame implements ActionListener{
         Board board = theFacade.stateOfBoard();
         JButton temp =  new JButton();
         for( int i = 1; i < board.sizeOf(); i++ ){
-            if( board.occupied( i ) ){
-                if( board.colorAt( i ) == Color.blue ){
-                    if((!isKing(board,i))){
-                        placePic(temp, i, blueSingle);
-                    }else if((isKing(board,i) )) {
-                        placePic(temp, i, blueKing);
-                    }
-                }else if( board.colorAt( i ) == Color.white ){
-                    if((!isKing(board,i))){
-                        placePic(temp, i, whiteSingle);
-                    }else if((isKing(board,i)) ){
-                        placePic(temp,i,whiteKing);
-                    }
+            if (occupAndBlue(board, i)){
+                if((!isKing(board,i))){
+                    placePic(temp, i, blueSingle);
+                }else if((isKing(board,i) )) {
+                    placePic(temp, i, blueKing);
                 }
+            else if( board.colorAt( i ) == Color.white ){
+                if((!isKing(board,i))){
+                    placePic(temp, i, whiteSingle);
+                }else if((isKing(board,i)) ){
+                    placePic(temp,i,whiteKing);
+                }
+            }
             }else {
                 //show no picture
                 temp = (JButton)possibleSquares.get(i);
@@ -415,18 +419,14 @@ public class CheckerGUI extends JFrame implements ActionListener{
             //go through all the spots on the board
             for( int i=1; i<temp.sizeOf(); i++ ){
                 //if there is a piece there
-                if( temp.occupied( i  ) ){
-                    //if its a blue piece there
-                    if( (temp.getPieceAt( i )).getColor() == Color.blue ){
+                if(occupAndBlue(temp, i)){
                         // increment number of blues
-                        bluesGone++;
+                    bluesGone++;
                         //if the piece is white
-                    }else if( (temp.getPieceAt( i )).getColor()
-                            == Color.white ){
+                }else if( (temp.getPieceAt( i )).getColor() == Color.white && temp.occupied(i) ){
                         //increment number of whites
                         whitesGone++;
                     }
-                }
             }//end of for loop
 
             //if either of the number are 0
