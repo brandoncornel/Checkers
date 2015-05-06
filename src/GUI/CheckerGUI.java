@@ -250,55 +250,30 @@ public class CheckerGUI extends JFrame implements ActionListener{
 
     }
 
+    public boolean movableSpot(ActionEvent e){
+        for(JButton b : validMoves) {
+            if (b.getActionCommand().equals(e.getActionCommand())) {
+                System.out.println("HERE");
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Takes care of input from users, handles any actions performed
      *
      * @param e  the event that has occured
+     *
      */
 
     public void actionPerformed( ActionEvent e ) {
 
         try{
-            //if a square gets clicked
-            if( e.getActionCommand().equals(  "1" ) ||
-                    e.getActionCommand().equals(  "3" ) ||
-                    e.getActionCommand().equals(  "5" ) ||
-                    e.getActionCommand().equals(  "7" ) ||
-                    e.getActionCommand().equals(  "8" ) ||
-                    e.getActionCommand().equals( "10" ) ||
-                    e.getActionCommand().equals( "12" ) ||
-                    e.getActionCommand().equals( "14" ) ||
-                    e.getActionCommand().equals( "17" ) ||
-                    e.getActionCommand().equals( "19" ) ||
-                    e.getActionCommand().equals( "21" ) ||
-                    e.getActionCommand().equals( "23" ) ||
-                    e.getActionCommand().equals( "24" ) ||
-                    e.getActionCommand().equals( "26" ) ||
-                    e.getActionCommand().equals( "28" ) ||
-                    e.getActionCommand().equals( "30" ) ||
-                    e.getActionCommand().equals( "33" ) ||
-                    e.getActionCommand().equals( "35" ) ||
-                    e.getActionCommand().equals( "37" ) ||
-                    e.getActionCommand().equals( "39" ) ||
-                    e.getActionCommand().equals( "40" ) ||
-                    e.getActionCommand().equals( "42" ) ||
-                    e.getActionCommand().equals( "44" ) ||
-                    e.getActionCommand().equals( "46" ) ||
-                    e.getActionCommand().equals( "49" ) ||
-                    e.getActionCommand().equals( "51" ) ||
-                    e.getActionCommand().equals( "53" ) ||
-                    e.getActionCommand().equals( "55" ) ||
-                    e.getActionCommand().equals( "56" ) ||
-                    e.getActionCommand().equals( "58" ) ||
-                    e.getActionCommand().equals( "60" ) ||
-                    e.getActionCommand().equals( "62" ) ) {
-
-                //call selectSpace with the button pressed
-                theFacade.selectSpace(
-                        Integer.parseInt(e.getActionCommand()));
-
-                //if draw is pressed
-            }else if( e.getActionCommand().equals( "draw" ) ){
+            if(movableSpot(e) == true){
+                theFacade.selectSpace(Integer.parseInt(e.getActionCommand()));
+            }
+            else if( e.getActionCommand().equals("draw") ){
                 //does sequence of events for a draw
                 theFacade.pressDraw();
 
