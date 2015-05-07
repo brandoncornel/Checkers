@@ -35,7 +35,6 @@ public class Rules {
     private int secondSpots[] = { -18, -14, 14, 18 }; // An array of spots
 	      					    // adj. to adjacentSpots.
     private int middle = 0;  // The space of a piece that gets jumped
-    //private final int KING = 1; // Constant to represent a king piece.
     private Vector leftWallPieces = new Vector(); // Positions of the left
 	       				         // wall spaces.
     private Vector rightWallPieces = new Vector(); // Positions of the right
@@ -81,7 +80,6 @@ public class Rules {
 	    int start = currentMove.startLocation(); // Start of piece.
 	    int end = currentMove.endLocation();  // Attempted end location
 	                                             // of the piece.
-//	    int pieceType = theBoard.getPieceAt( start ).getType();// Type of the piece.
 	    // Contains any possible moves if the piece is on the wall.
         Vector wallMoves = new Vector();
 	    Vector pieces = new Vector();

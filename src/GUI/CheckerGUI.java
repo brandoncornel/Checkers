@@ -40,6 +40,7 @@ public class CheckerGUI extends JFrame implements ActionListener{
 
 	private static Icon iconFromResource(String res) {
 		java.net.URL location = CheckerGUI.class.getClassLoader().getResource(res);
+		// location is null if the ClassLoader cannot find a resource with the specified name.
 		return (null == location ? null : new ImageIcon(location));
 	}
 	
@@ -52,7 +53,6 @@ public class CheckerGUI extends JFrame implements ActionListener{
     private static Facade theFacade; //the facade
 
     private List<JButton> possibleSquares = new ArrayList<JButton>();//a vector of the squares
-    private int timeRemaining;//the time remaining
     private List<JButton> validMoves = new ArrayList<JButton>();
 
 
