@@ -11,6 +11,7 @@ package System; /**
  *
  */
 
+import Model.ObserverPlayer;
 import Model.Player;
 import Model.Rules;
 
@@ -24,7 +25,7 @@ import javax.swing.*;
  *  @author
  */
 
-public class LocalPlayer extends Player {
+public class LocalPlayer extends Player implements ObserverPlayer {
     
     /**
      * This is a default constructor for this object
@@ -121,6 +122,10 @@ public class LocalPlayer extends Player {
 	
 	System.exit( 0 );
     }
-    
+
+    @Override
+    public void update() {
+
+    }
 }//System.LocalPlayer.java
 

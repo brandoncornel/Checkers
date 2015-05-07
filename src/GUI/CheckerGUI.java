@@ -17,6 +17,7 @@ package GUI;/*
 
 import Model.Board;
 import Model.KingPiece;
+import Model.ObserverBoard;
 import System.Facade;
 
 import javax.swing.*;
@@ -36,7 +37,7 @@ import java.util.List;
  * @version
  */
 
-public class CheckerGUI extends JFrame implements ActionListener{
+public class CheckerGUI extends JFrame implements ActionListener, ObserverBoard{
 
 	private static Icon iconFromResource(String res) {
 		java.net.URL location = CheckerGUI.class.getClassLoader().getResource(res);
@@ -324,7 +325,7 @@ public class CheckerGUI extends JFrame implements ActionListener{
     }
 
 
-    private void update(){
+    public void update(){
         if( checkEndConditions() ){
             theFacade.showEndGame(" ");
         }

@@ -25,7 +25,7 @@ import java.util.ArrayList;
  */
 public class Board{
 
-    private List<Observer> observers = new ArrayList<Observer>();
+    private List<ObserverBoard> observerBoards = new ArrayList<ObserverBoard>();
     private int state;
 
    private Piece pieces[]; // the pieces that are on the board
@@ -68,13 +68,13 @@ public class Board{
         notifyAllObservers();
     }
 
-   public void attatch(Observer observer) {
-       observers.add(observer);
+   public void attatch(ObserverBoard observerBoard) {
+       observerBoards.add(observerBoard);
    }
 
     public void notifyAllObservers(){
-        for(Observer observer : observers){
-            observer.update();
+        for(ObserverBoard observerBoard : observerBoards){
+            observerBoard.update();
         }
     }
 
