@@ -39,7 +39,8 @@ import java.util.List;
 public class CheckerGUI extends JFrame implements ActionListener{
 
 	private static Icon iconFromResource(String res) {
-		return new ImageIcon(CheckerGUI.class.getClassLoader().getResource(res));
+		java.net.URL location = CheckerGUI.class.getClassLoader().getResource(res);
+		return (null == location ? null : new ImageIcon(location));
 	}
 	
 	private final static Icon blueSingle = iconFromResource("GUI/BlueSingle.gif");
