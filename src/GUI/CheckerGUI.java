@@ -38,16 +38,21 @@ import java.util.List;
 
 public class CheckerGUI extends JFrame implements ActionListener{
 
-    private String blueSingle = "file:BlueSingle.gif";
-    private String whiteSingle = "file:WhiteSingle.gif";
-    private String blueKing = "file:BlueKing.gif";
-    private String whiteKing = "file:WhiteKing.gif";
+	private static Icon iconFromResource(String res) {
+		java.net.URL location = CheckerGUI.class.getClassLoader().getResource(res);
+		// location is null if the ClassLoader cannot find a resource with the specified name.
+		return (null == location ? null : new ImageIcon(location));
+	}
+	
+	private final static Icon blueSingle = iconFromResource("GUI/BlueSingle.gif");
+	private final static Icon whiteSingle = iconFromResource("GUI/WhiteSingle.gif");
+	private final static Icon blueKing = iconFromResource("GUI/BlueKing.gif");
+	private final static Icon whiteKing = iconFromResource("GUI/WhiteKing.gif");
 
 
     private static Facade theFacade; //the facade
 
     private List<JButton> possibleSquares = new ArrayList<JButton>();//a vector of the squares
-    private int timeRemaining;//the time remaining
     private List<JButton> validMoves = new ArrayList<JButton>();
 
 
@@ -310,14 +315,8 @@ public class CheckerGUI extends JFrame implements ActionListener{
     }
 
 
-    private void placePic(JButton temp, int i, String pic){
-        temp = (JButton)possibleSquares.get(i);
-        try{
-            temp.setIcon(
-                    new ImageIcon( new URL(pic) ));
-        }catch( MalformedURLException e ){
-            System.out.println(e.getMessage());
-        }
+    private void placePic(JButton temp, Icon pic){
+        temp.setIcon( pic );
     }
 
     public boolean occupAndBlue(Board board, int i){
@@ -330,24 +329,25 @@ public class CheckerGUI extends JFrame implements ActionListener{
             theFacade.showEndGame(" ");
         }
         Board board = theFacade.stateOfBoard();
-        JButton temp =  new JButton();
         for( int i = 1; i < board.sizeOf(); i++ ){
+            JButton temp = (JButton)possibleSquares.get(i);
+            
             if (occupAndBlue(board, i)){
                 if((!isKing(board,i))){
-                    placePic(temp, i, blueSingle);
+                    placePic(temp, blueSingle);
                 }else if((isKing(board,i) )) {
-                    placePic(temp, i, blueKing);
-                }
-            else if( board.colorAt( i ) == Color.white ){
-                if((!isKing(board,i))){
-                    placePic(temp, i, whiteSingle);
-                }else if((isKing(board,i)) ){
-                    placePic(temp,i,whiteKing);
+                    placePic(temp, blueKing);
                 }
             }
-            }else {
+            else if( board.colorAt( i ) == Color.white ){
+                if((!isKing(board,i))){
+                    placePic(temp, whiteSingle);
+                }else if((isKing(board,i)) ){
+                    placePic(temp, whiteKing);
+                }
+            }
+            else {
                 //show no picture
-                temp = (JButton)possibleSquares.get(i);
                 temp.setIcon( null );
             }
         }
