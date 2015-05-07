@@ -30,9 +30,7 @@ public class Secondscreen {
      * 
      * Creates new GUI.Secondscreen
      *
-     * @param first the GUI.Firstscreen object that created this window
-     * @param gameType the type of game 
-     * @param ipAddr the address of the other player, if there is one.
+
      */
     
     public Secondscreen( ) {
@@ -55,7 +53,7 @@ public class Secondscreen {
         theFacade.setPlayerName(2, "Enter name");
 
         
-        this.frame = new JFrame("Second Screen");
+        this.frame = new JFrame("Checkers Setup");
         
         initComponents();
         frame.pack();
@@ -127,7 +125,6 @@ public class Secondscreen {
 	 * This takes care of when an action takes place. It will check the
 	 * action command of all components and then deicde what needs to be done.
 	 *
-	 * @param the event fired
 	 */
 	
 	private final class ContinueToCheckerGuiActionListener implements ActionListener {
