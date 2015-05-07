@@ -16,6 +16,8 @@ import Model.Player;
 import Model.Rules;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *  This class inherits from the player. 
@@ -25,8 +27,10 @@ import javax.swing.*;
  *  @author
  */
 
-public class LocalPlayer extends Player implements ObserverPlayer {
-    
+public class LocalPlayer extends Player {
+    private List<ObserverPlayer> observerBoards = new ArrayList<ObserverPlayer>();
+
+
     /**
      * This is a default constructor for this object
      */
@@ -122,9 +126,6 @@ public class LocalPlayer extends Player implements ObserverPlayer {
 	System.exit( 0 );
     }
 
-    @Override
-    public void update() {
 
-    }
 }//System.LocalPlayer.java
 

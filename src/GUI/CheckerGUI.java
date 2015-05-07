@@ -18,6 +18,7 @@ package GUI;/*
 import Model.Board;
 import Model.KingPiece;
 import Model.ObserverBoard;
+import Model.ObserverPlayer;
 import System.Facade;
 
 import javax.swing.*;
@@ -37,7 +38,7 @@ import java.util.List;
  * @version
  */
 
-public class CheckerGUI extends JFrame implements ActionListener, ObserverBoard{
+public class CheckerGUI extends JFrame implements ActionListener, ObserverBoard, ObserverPlayer{
 
 	private static Icon iconFromResource(String res) {
 		java.net.URL location = CheckerGUI.class.getClassLoader().getResource(res);
